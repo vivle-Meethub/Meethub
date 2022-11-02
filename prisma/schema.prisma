@@ -11,11 +11,49 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  username   String
-  email      String
-  bio        String?
-  attendance Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id              Int       @id @default(autoincrement())
+  username        String
+  email           String
+  bio             String?
+  attendance      Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  post            Post[]
+  writtenMessages Message[] @relation(name: "writtenMessages")
+  receivedMessage Message[] @relation(name: "receivedMessage")
+  skill           Skill[]
+  messageId       Int?
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  imageLink String
+  content   String?  @db.MediumText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User[]
+  skill     Skill[]
+}
+
+model Skill {
+  id        Int    @id @default(autoincrement())
+  skillName String
+  skillURL  String
+  User      User?  @relation(fields: [userId], references: [id])
+  userId    Int?
+  Post      Post?  @relation(fields: [postId], references: [id])
+  postId    Int?
+}
+
+model Message {
+  id          Int    @id @default(autoincrement())
+  content     String @db.MediumText
+  recipient   User   @relation(name: "writtenMessages", fields: [recipientId], onDelete: Cascade, references: [id])
+  recipientId Int
+  sender      User   @relation(name: "receivedMessage", fields: [senderId], onDelete: Cascade, references: [id])
+  senderId    Int
+
+  @@index([recipientId])
+  @@index([senderId])
 }
