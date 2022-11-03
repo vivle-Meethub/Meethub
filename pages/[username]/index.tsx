@@ -127,6 +127,7 @@ const User = () => {
       <Layout seoTitle={username}>
         <div className="App">
           <section className="user" style={{ display: "flex" }}>
+            {/* ==================== profile section ==================== */}
             <section className="profile">
               <div
                 style={{
@@ -169,6 +170,7 @@ const User = () => {
               </div>
             </section>
 
+            {/* ==================== unity section ==================== */}
             <section
               style={{ marginTop: "20px", marginLeft: "30px" }}
               className="unity"
@@ -293,6 +295,12 @@ border-b-[1px] border-blue-500
                 style={{ display: "none" }}
                 className="react-activity-calendar__count"
               ></div>
+            </section>
+
+            {/* ==================== post section ==================== */}
+            {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
+            <section className="post">
+
             </section>
           </section>
         </div>
