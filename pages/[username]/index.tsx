@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout";
 
@@ -30,13 +31,51 @@ const User = () => {
   const [today, setToday] = useState(new Date().toLocaleDateString());
   const [is3D, setIs3D] = useState(true);
 
+
+  const [items,setItems] = useState([]);
+  const [hasMore,sethasMore] = useState(true);
+  const [page,setPage] = useState(2);
+
   useEffect(() => {
     setTimeout(() => {
       sendUserToUnity();
     }, 2000);
 
     sendWeatherToUnity();
+
+    const getComments = async() => {
+      const res = await fetch(
+        `https://jsonplaceholder.typicode.com/comments?_page=1&_limit=20`
+      )
+
+      const data = await res.json();
+      setItems(data);
+    }
+
+    getComments();
   }, [commitCount]);
+
+
+  const fetchComments = async() => {
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=20`
+    )
+
+    const data = await res.json();
+    return data;
+  };
+
+  
+  const fetchData = async() => {
+    const commentsFormServer = await fetchComments();
+
+    setItems([...items, ...commentsFormServer]);
+
+    if (commentsFormServer.length === 0 || commentsFormServer.length < 20) {
+        sethasMore(false);
+    }
+    setPage(page + 1);
+  };
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -301,12 +340,33 @@ border-b-[1px] border-blue-500
               {/* ==================== post section ==================== */}
               {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
               <section className="post">
-                <div><button>테스트 버튼</button></div>
-                <div className="post-box flex flex-wrap">
-                    <div className="post-item">
-                        <img style={{width:'300px',height:'300px'}} src="https://source.unsplash.com/random"/>
-                    </div>        
-                </div>
+                <InfiniteScroll
+                  dataLength={items.length}
+                  next={fetchData}
+                  hasMore={hasMore}
+                  loader={<h4>Loading...</h4>}
+                  endMessage={
+                    <p style={{ textAlign: 'center' }}>
+            조회할 데이터가 없습니다.
+          </p>
+  }
+>
+
+  <div >
+    <div className="post-box flex flex-wrap">
+      {items.map((item :any)=>{
+        return <div className="post-item w-1/3" key={item.id}>
+                  <div><img style={{width:'300px', height:'300px'}} src = {`https://source.unsplash.com/random/${item.id}`}/></div>
+                  <div>{item.id}</div>
+                  <div style={{width: '319px',whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{item.name}</div>
+                  <div>{item.email}</div>
+      
+        </div>})}
+    </div>
+  </div>
+
+</InfiniteScroll>      
+                
               </section>
             </section>
             </section>
