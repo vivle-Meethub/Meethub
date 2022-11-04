@@ -251,32 +251,33 @@ const User = () => {
                     sendMessage("GameManager", "GetDate", "03/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-pink-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#DB2777,0_0px_0_0_#F472B6]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#DB2777,0_15px_0_0_#F472B6]
-border-b-[1px] border-pink-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    봄
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🌸
                   </span>
                 </div>
+
 
                 <div
                   onClick={() => {
                     sendMessage("GameManager", "GetDate", "08/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-green-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#10B981,0_0px_0_0_#34D399]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#10B981,0_15px_0_0_#34D399]
-border-b-[1px] border-green-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    여름
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🌴
                   </span>
                 </div>
 
@@ -285,15 +286,15 @@ border-b-[1px] border-green-500
                     sendMessage("GameManager", "GetDate", "09/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-red-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#DC2626,0_0px_0_0_#F87171]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#DC2626,0_15px_0_0_#F87171]
-border-b-[1px] border-red-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    가을
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🍁
                   </span>
                 </div>
 
@@ -302,17 +303,18 @@ border-b-[1px] border-red-500
                     sendMessage("GameManager", "GetDate", "12/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-border-b-[1px] border-blue-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    겨울
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  ⛄
                   </span>
                 </div>
+
               </div>
               <div style={is3D ? { display: "block" } : { display: "none" }}>
                 <Unity
