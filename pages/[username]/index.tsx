@@ -32,7 +32,7 @@ const User = () => {
   const [is3D, setIs3D] = useState(true);
 
 
-  const [items,setItems] = useState([]);
+  const [items,setItems] = useState<any>([]);
   const [hasMore,sethasMore] = useState(true);
   const [page,setPage] = useState(2);
 
