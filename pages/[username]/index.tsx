@@ -1,11 +1,15 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout";
+import ReactS3Client from "react-aws-s3-typescript";
+import { s3Config } from "../../s3Config"
+import { v4 as uuid } from 'uuid';
+
 
 const User = () => {
   const router = useRouter();
@@ -13,6 +17,7 @@ const User = () => {
 
   const key = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
+  const fileInput = useRef<any>();
   //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
@@ -76,6 +81,46 @@ const User = () => {
     }
     setPage(page + 1);
   };
+
+  
+  /* s3 업로드 테스트 */
+  const uploadFile = async (e:any) => {
+    e.preventDefault();
+    const s3 = new ReactS3Client(s3Config);
+    const file = fileInput.current.files[0];
+    const newFileName = uuid();
+
+    try {
+      if(file) {
+        console.log(file.type);
+        if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
+          alert('JPEG, PNG, JPG 파일만 업로드 가능합니다.');
+          e.target.value = null;
+        } else{
+
+          if (file.size > 10 * 1024 * 1024) {
+            alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
+            e.target.value = null;              
+          } else {
+
+            const res = await s3.uploadFile(file, newFileName);
+            console.log(res);
+        
+            if (res.status === 204) {
+              console.log("파일업로드 완료");
+            } else {
+              console.log("파일업로드 실패");
+            }
+
+          }
+        }
+      }
+
+  } catch (exception) {
+      console.log(exception);
+  }
+
+  }
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -209,6 +254,12 @@ const User = () => {
                   alt={`${username}'s GitHub Stats`}
                 />
               </div>
+
+              <form onSubmit={uploadFile}>
+                <input type="file" ref={fileInput} />
+                <br />
+                <button type="submit"> 업로드 </button>
+              </form>
             </section>
 
             {/* ==================== unity-post section ==================== */}
