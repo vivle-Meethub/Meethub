@@ -209,12 +209,16 @@ const User = () => {
   return (
     <>
       <Layout seoTitle={username}>
-        <div className="App">
-          <section className="user">
+        <div className="App flex-col-reverse">
+          <section className="user flex justify-center">
 
-            <section className="flex">
+            
               {/* ==================== profile section ==================== */}
-            <section className="profile">
+            <section className="profile flex-col items-center justify-center relative">
+
+
+              <div className="sticky top-0">
+
               <div
                 style={{
                   width: "250px",
@@ -237,6 +241,7 @@ const User = () => {
                 />
               </div>
 
+              
               <div className="font-bold text-xl px-5 py-5">{username}</div>
 
               <div>
@@ -254,12 +259,14 @@ const User = () => {
                   alt={`${username}'s GitHub Stats`}
                 />
               </div>
-
+              
               <form onSubmit={uploadFile}>
                 <input type="file" ref={fileInput} />
                 <br />
                 <button type="submit"> 업로드 </button>
               </form>
+
+              </div>
             </section>
 
             {/* ==================== unity-post section ==================== */}
@@ -273,8 +280,8 @@ const User = () => {
                 </div>
               )}
 
-              <div className="season-test flex justify-end">
-                <div className="flex items-center mr-20">
+              <div className="season-test flex">
+                <div className="unity-container flex items-center mr-20">
                   <div
                     onClick={() => {
                       setIs3D(!is3D);
@@ -367,11 +374,13 @@ const User = () => {
                 </div>
 
               </div>
-              <div style={is3D ? { display: "block" } : { display: "none" }}>
+              <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <Unity
                   style={{
-                    width: "850px",
-                    height: "477px",
+                    display:"flex",
+                    justifySelf:"center",
+                    width: "80%",
+                    height: "80%",
                     justifyContent: "center",
                     alignSelf: "center",
                   }}
@@ -392,7 +401,7 @@ const User = () => {
 
               {/* ==================== post section ==================== */}
               {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
-              <section className="post">
+              <section className="post mt-10">
                 <InfiniteScroll
                   dataLength={items.length}
                   next={fetchData}
@@ -408,7 +417,7 @@ const User = () => {
   <div >
     <div className="post-box flex flex-wrap">
       {items.map((item :any)=>{
-        return <div className="post-item w-1/3" key={item.id}>
+        return <div className="post-item" key={item.id}>
                   <div><img style={{width:'300px', height:'300px'}} src = {`https://source.unsplash.com/random/${item.id}`}/></div>
                   <div>{item.id}</div>
                   <div style={{width: '319px',whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{item.name}</div>
@@ -423,8 +432,7 @@ const User = () => {
               </section>
             </section>
             </section>
-          
-          </section>
+
         </div>
       </Layout>
     </>
