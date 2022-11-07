@@ -1,11 +1,15 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
 import Layout from "../../components/layout";
+import ReactS3Client from "react-aws-s3-typescript";
+import { s3Config } from "../../s3Config"
+import { v4 as uuid } from 'uuid';
+
 
 const User = () => {
   const router = useRouter();
@@ -13,6 +17,7 @@ const User = () => {
 
   const key = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
+  const fileInput = useRef<any>();
   //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
@@ -32,7 +37,7 @@ const User = () => {
   const [is3D, setIs3D] = useState(true);
 
 
-  const [items,setItems] = useState([]);
+  const [items,setItems] = useState<any>([]);
   const [hasMore,sethasMore] = useState(true);
   const [page,setPage] = useState(2);
 
@@ -76,6 +81,45 @@ const User = () => {
     }
     setPage(page + 1);
   };
+
+  /* s3 업로드 테스트 */
+  const uploadFile = async (e:any) => {
+    e.preventDefault();
+    const s3:any = new ReactS3Client(s3Config);
+    const file = fileInput.current.files[0];
+    const newFileName = uuid();
+
+    try {
+      if(file) {
+        console.log(file.type);
+        if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
+          alert('JPEG, PNG, JPG 파일만 업로드 가능합니다.');
+          e.target.value = null;
+        } else{
+
+          if (file.size > 10 * 1024 * 1024) {
+            alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
+            e.target.value = null;              
+          } else {
+
+            const res = await s3.uploadFile(file, newFileName);
+            console.log(res);
+        
+            if (res.status === 204) {
+              console.log("파일업로드 완료");
+            } else {
+              console.log("파일업로드 실패");
+            }
+
+          }
+        }
+      }
+
+  } catch (exception) {
+      console.log(exception);
+  }
+
+  }
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -164,12 +208,16 @@ const User = () => {
   return (
     <>
       <Layout seoTitle={username}>
-        <div className="App">
-          <section className="user">
+        <div className="App flex-col-reverse">
+          <section className="user flex justify-center">
 
-            <section className="flex">
+            
               {/* ==================== profile section ==================== */}
-            <section className="profile">
+            <section className="profile flex-col items-center justify-center relative">
+
+
+              <div className="sticky top-0">
+
               <div
                 style={{
                   width: "250px",
@@ -192,6 +240,7 @@ const User = () => {
                 />
               </div>
 
+              
               <div className="font-bold text-xl px-5 py-5">{username}</div>
 
               <div>
@@ -209,6 +258,14 @@ const User = () => {
                   alt={`${username}'s GitHub Stats`}
                 />
               </div>
+              
+              <form onSubmit={uploadFile}>
+                <input type="file" ref={fileInput} />
+                <br />
+                <button type="submit"> 업로드 </button>
+              </form>
+
+              </div>
             </section>
 
             {/* ==================== unity-post section ==================== */}
@@ -222,8 +279,8 @@ const User = () => {
                 </div>
               )}
 
-              <div className="season-test flex justify-end">
-                <div className="flex items-center mr-20">
+              <div className="season-test flex">
+                <div className="unity-container flex items-center mr-20">
                   <div
                     onClick={() => {
                       setIs3D(!is3D);
@@ -251,32 +308,33 @@ const User = () => {
                     sendMessage("GameManager", "GetDate", "03/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-pink-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#DB2777,0_0px_0_0_#F472B6]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#DB2777,0_15px_0_0_#F472B6]
-border-b-[1px] border-pink-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    봄
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🌸
                   </span>
                 </div>
+
 
                 <div
                   onClick={() => {
                     sendMessage("GameManager", "GetDate", "08/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-green-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#10B981,0_0px_0_0_#34D399]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#10B981,0_15px_0_0_#34D399]
-border-b-[1px] border-green-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    여름
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🌴
                   </span>
                 </div>
 
@@ -285,15 +343,15 @@ border-b-[1px] border-green-500
                     sendMessage("GameManager", "GetDate", "09/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-red-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#DC2626,0_0px_0_0_#F87171]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#DC2626,0_15px_0_0_#F87171]
-border-b-[1px] border-red-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    가을
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  🍁
                   </span>
                 </div>
 
@@ -302,23 +360,26 @@ border-b-[1px] border-red-500
                     sendMessage("GameManager", "GetDate", "12/30/2022");
                     sendUserToUnity();
                   }}
-                  className="my-5 mx-1 button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
-active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-active:border-b-[0px]
-transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-border-b-[1px] border-blue-500
-"
+                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
+                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
+                              active:border-b-[0px]
+                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
+                              border-b-[1px] border-[#b8e994]
+                            "
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-white font-bold text-lg ">
-                    겨울
+                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
+                  ⛄
                   </span>
                 </div>
+
               </div>
-              <div style={is3D ? { display: "block" } : { display: "none" }}>
+              <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <Unity
                   style={{
-                    width: "850px",
-                    height: "477px",
+                    display:"flex",
+                    justifySelf:"center",
+                    width: "80%",
+                    height: "80%",
                     justifyContent: "center",
                     alignSelf: "center",
                   }}
@@ -339,7 +400,9 @@ border-b-[1px] border-blue-500
 
               {/* ==================== post section ==================== */}
               {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
-              <section className="post">
+
+              <section className="post mt-10">
+
                 <InfiniteScroll
                   dataLength={items.length}
                   next={fetchData}
@@ -355,7 +418,9 @@ border-b-[1px] border-blue-500
   <div >
     <div className="post-box flex flex-wrap">
       {items.map((item :any)=>{
-        return <div className="post-item w-1/3" key={item.id}>
+
+        return <div className="post-item" key={item.id}>
+
                   <div><img style={{width:'300px', height:'300px'}} src = {`https://source.unsplash.com/random/${item.id}`}/></div>
                   <div>{item.id}</div>
                   <div style={{width: '319px',whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{item.name}</div>
@@ -370,8 +435,8 @@ border-b-[1px] border-blue-500
               </section>
             </section>
             </section>
-          
-          </section>
+
+
         </div>
       </Layout>
     </>
