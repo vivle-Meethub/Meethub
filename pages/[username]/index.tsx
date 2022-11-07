@@ -41,6 +41,8 @@ const User = () => {
   const [hasMore,sethasMore] = useState(true);
   const [page,setPage] = useState(2);
 
+  const [test,setTest] = useState();
+
   useEffect(() => {
     setTimeout(() => {
       sendUserToUnity();
@@ -82,11 +84,11 @@ const User = () => {
     setPage(page + 1);
   };
 
-  
+
   /* s3 업로드 테스트 */
   const uploadFile = async (e:any) => {
     e.preventDefault();
-    const s3 = new ReactS3Client(s3Config);
+    const s3:any = new ReactS3Client(s3Config);
     const file = fileInput.current.files[0];
     const newFileName = uuid();
 
@@ -120,6 +122,13 @@ const User = () => {
       console.log(exception);
   }
 
+  }
+
+
+  const testHandler = (e:any)=> {
+    setTest(e.target.value);
+    console.log(test);
+    
   }
 
   function getLocation() {
@@ -209,6 +218,7 @@ const User = () => {
   return (
     <>
       <Layout seoTitle={username}>
+
         <div className="App flex-col-reverse">
           <section className="user flex justify-center">
 
@@ -401,6 +411,8 @@ const User = () => {
 
               {/* ==================== post section ==================== */}
               {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
+
+
               <section className="post mt-10">
                 <InfiniteScroll
                   dataLength={items.length}
@@ -430,9 +442,9 @@ const User = () => {
 </InfiniteScroll>      
                 
               </section>
-            </section>
-            </section>
 
+            </section>
+            </section>
         </div>
       </Layout>
     </>
