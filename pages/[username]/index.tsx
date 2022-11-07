@@ -86,7 +86,7 @@ const User = () => {
   /* s3 업로드 테스트 */
   const uploadFile = async (e:any) => {
     e.preventDefault();
-    const s3 = new ReactS3Client(s3Config);
+    const s3:any = new ReactS3Client(s3Config);
     const file = fileInput.current.files[0];
     const newFileName = uuid();
 

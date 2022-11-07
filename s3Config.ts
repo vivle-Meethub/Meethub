@@ -1,4 +1,4 @@
-export const s3Config = {
+export const s3Config:any = {
     bucketName:  process.env.NEXT_PUBLIC_BUCKETNAME,
     dirName: process.env.NEXT_PUBLIC_DIRNAME,
     region: process.env.NEXT_PUBLIC_REGION,
