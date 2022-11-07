@@ -18,7 +18,7 @@ const User = () => {
   const key = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
   const fileInput = useRef<any>();
-  //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
+  //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext({
