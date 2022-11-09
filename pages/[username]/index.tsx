@@ -5,11 +5,11 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
-import Layout from "../../components/layout";
-import ReactS3Client from "react-aws-s3-typescript";
-import { s3Config } from "../../s3Config"
+import { Line } from "rc-progress";
+import { storage } from "../../firebaseConfig";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuid } from 'uuid';
-
+import Layout from "../../components/layout";
 
 const User = () => {
   const router = useRouter();
@@ -40,8 +40,10 @@ const User = () => {
   const [items,setItems] = useState<any>([]);
   const [hasMore,sethasMore] = useState(true);
   const [page,setPage] = useState(2);
+  const [progress,setProgress] = useState(0);
+  const [photoURL, setPhotoURL] = useState('');
 
-  const [test,setTest] = useState();
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,6 +63,35 @@ const User = () => {
 
     getComments();
   }, [commitCount]);
+
+
+  const formHandler = (e:any) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+  }
+
+  const uploadFiles = (file:any) => {
+
+    if(!file) return;
+
+    const newFileName = uuid();
+    const storageRef = ref(storage,`post-images/${newFileName}`);
+    const uploadTask = uploadBytesResumable(storageRef,file);
+
+    uploadTask.on("state_changed", (snapshot) =>{
+      const prog = Math.round(
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      );
+
+      setProgress(prog);
+    },(err)=>console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url)=>setPhotoURL(url));
+      }
+    );
+
+};
 
 
   const fetchComments = async() => {
@@ -83,53 +114,6 @@ const User = () => {
     }
     setPage(page + 1);
   };
-
-
-  /* s3 업로드 테스트 */
-  const uploadFile = async (e:any) => {
-    e.preventDefault();
-    const s3:any = new ReactS3Client(s3Config);
-    const file = fileInput.current.files[0];
-    const newFileName = uuid();
-
-    try {
-      if(file) {
-        console.log(file.type);
-        if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
-          alert('JPEG, PNG, JPG 파일만 업로드 가능합니다.');
-          e.target.value = null;
-        } else{
-
-          if (file.size > 10 * 1024 * 1024) {
-            alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
-            e.target.value = null;              
-          } else {
-
-            const res = await s3.uploadFile(file, newFileName);
-            console.log(res);
-        
-            if (res.status === 204) {
-              console.log("파일업로드 완료");
-            } else {
-              console.log("파일업로드 실패");
-            }
-
-          }
-        }
-      }
-
-  } catch (exception) {
-      console.log(exception);
-  }
-
-  }
-
-
-  const testHandler = (e:any)=> {
-    setTest(e.target.value);
-    console.log(test);
-    
-  }
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -270,11 +254,24 @@ const User = () => {
                 />
               </div>
               
-              <form onSubmit={uploadFile}>
-                <input type="file" ref={fileInput} />
-                <br />
-                <button type="submit"> 업로드 </button>
-              </form>
+            <form onSubmit={formHandler}>
+              <input type="file" className="input"/>
+              <button
+               className="bg-[#b8e994] hover:bg-[#78e08f] text-white font-bold py-2 px-4 border-b-4
+                         border-[#78e08f] hover:border-[#b8e994] rounded"
+               type="submit">Upload</button>
+            </form>
+
+            <hr />
+
+            <h3>Upload {progress} %</h3>
+            <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
+
+            {photoURL?.length > 0 && (
+              <div>
+                <img style={{width:"300px", height:"300px"}} src={photoURL} alt='업로드 이미지'/>
+              </div>
+            )}
 
               </div>
             </section>
