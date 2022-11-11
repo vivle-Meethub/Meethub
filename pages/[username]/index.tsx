@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect,useRef } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
@@ -37,10 +37,10 @@ const User = () => {
   const [is3D, setIs3D] = useState(true);
 
 
-  const [items, setItems] = useState<any>([]);
-  const [hasMore, sethasMore] = useState(true);
-  const [page, setPage] = useState(2);
-  const [progress, setProgress] = useState(0);
+  const [items,setItems] = useState<any>([]);
+  const [hasMore,sethasMore] = useState(true);
+  const [page,setPage] = useState(2);
+  const [progress,setProgress] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
 
 
@@ -52,7 +52,7 @@ const User = () => {
 
     sendWeatherToUnity();
 
-    const getComments = async () => {
+    const getComments = async() => {
       const res = await fetch(
         `https://jsonplaceholder.typicode.com/comments?_page=1&_limit=20`
       )
@@ -65,36 +65,36 @@ const User = () => {
   }, [commitCount]);
 
 
-  const formHandler = (e: any) => {
+  const formHandler = (e:any) => {
     e.preventDefault();
     const file = e.target[0].files[0];
     uploadFiles(file);
   }
 
-  const uploadFiles = (file: any) => {
+  const uploadFiles = (file:any) => {
 
-    if (!file) return;
+    if(!file) return;
 
     const newFileName = uuid();
-    const storageRef = ref(storage, `post-images/${newFileName}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storageRef = ref(storage,`post-images/${newFileName}`);
+    const uploadTask = uploadBytesResumable(storageRef,file);
 
-    uploadTask.on("state_changed", (snapshot) => {
+    uploadTask.on("state_changed", (snapshot) =>{
       const prog = Math.round(
         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
       );
 
       setProgress(prog);
-    }, (err) => console.log(err),
+    },(err)=>console.log(err),
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => setPhotoURL(url));
+        getDownloadURL(uploadTask.snapshot.ref).then((url)=>setPhotoURL(url));
       }
     );
 
-  };
+};
 
 
-  const fetchComments = async () => {
+  const fetchComments = async() => {
     const res = await fetch(
       `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=20`
     )
@@ -103,14 +103,14 @@ const User = () => {
     return data;
   };
 
-
-  const fetchData = async () => {
+  
+  const fetchData = async() => {
     const commentsFormServer = await fetchComments();
 
     setItems([...items, ...commentsFormServer]);
 
     if (commentsFormServer.length === 0 || commentsFormServer.length < 20) {
-      sethasMore(false);
+        sethasMore(false);
     }
     setPage(page + 1);
   };
@@ -201,78 +201,77 @@ const User = () => {
 
   return (
     <>
-
       <Layout seoTitle={username}>
 
         <div className="App flex-col-reverse">
           <section className="user flex justify-center">
 
-
-            {/* ==================== profile section ==================== */}
+            
+              {/* ==================== profile section ==================== */}
             <section className="profile flex-col items-center justify-center relative">
 
 
               <div className="sticky top-0">
 
-                <div
+              <div
+                style={{
+                  width: "250px",
+                  height: "250px",
+                  borderRadius: "70%",
+                  overflow: "hidden",
+                }}
+                className="box"
+              >
+                <img
                   style={{
-                    width: "250px",
-                    height: "250px",
+                    width: "100%",
+                    height: "100%",
                     borderRadius: "70%",
                     overflow: "hidden",
                   }}
-                  className="box"
-                >
+                  className="profile"
+                  src={`https://github.com/${username}.png`}
+                  alt="profile"
+                />
+              </div>
+
+              
+              <div className="font-bold text-xl px-5 py-5">{username}</div>
+
+              <div>
+                <a href={`https://github.com/${username}`}>
                   <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: "70%",
-                      overflow: "hidden",
-                    }}
-                    className="profile"
-                    src={`https://github.com/${username}.png`}
-                    alt="profile"
-                  />
-                </div>
-
-
-                <div className="font-bold text-xl px-5 py-5">{username}</div>
-
-                <div>
-                  <a href={`https://github.com/${username}`}>
-                    <img
-                      src={`https://github-readme-stats.vercel.app/api?username=${username}&theme=vue&show_icons=true&line_height=40&count_private=true&hide=contribs`}
-                      alt={`${username}'s GitHub Stats`}
-                    />
-                  </a>
-                </div>
-
-                <div>
-                  <img
-                    src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&card_width=500`}
+                    src={`https://github-readme-stats.vercel.app/api?username=${username}&theme=vue&show_icons=true&line_height=40&count_private=true&hide=contribs`}
                     alt={`${username}'s GitHub Stats`}
                   />
-                </div>
+                </a>
+              </div>
 
-                <form onSubmit={formHandler}>
-                  <input type="file" className="input" />
-                  <button
-                    className="bg-[#b8e994] hover:bg-[#78e08f] text-white font-bold py-2 px-4 border-b-4
+              <div>
+                <img
+                  src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&card_width=500`}
+                  alt={`${username}'s GitHub Stats`}
+                />
+              </div>
+              
+            <form onSubmit={formHandler}>
+              <input type="file" className="input"/>
+              <button
+               className="bg-[#b8e994] hover:bg-[#78e08f] text-white font-bold py-2 px-4 border-b-4
                          border-[#78e08f] hover:border-[#b8e994] rounded"
-                    type="submit">Upload</button>
-                </form>
+               type="submit">Upload</button>
+            </form>
 
-                <hr />
+            <hr />
 
-                <h3>Upload {progress} %</h3>
-                <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
+            <h3>Upload {progress} %</h3>
+            <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
 
-                {photoURL?.length > 0 && (
-                  <div>
-                    <img style={{ width: "300px", height: "300px" }} src={photoURL} alt='업로드 이미지' />
-                  </div>
-                )}
+            {photoURL?.length > 0 && (
+              <div>
+                <img style={{width:"300px", height:"300px"}} src={photoURL} alt='업로드 이미지'/>
+              </div>
+            )}
 
               </div>
             </section>
@@ -325,7 +324,7 @@ const User = () => {
                             "
                 >
                   <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                    🌸
+                  🌸
                   </span>
                 </div>
 
@@ -343,7 +342,7 @@ const User = () => {
                             "
                 >
                   <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                    🌴
+                  🌴
                   </span>
                 </div>
 
@@ -360,7 +359,7 @@ const User = () => {
                             "
                 >
                   <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                    🍁
+                  🍁
                   </span>
                 </div>
 
@@ -377,7 +376,7 @@ const User = () => {
                             "
                 >
                   <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                    ⛄
+                  ⛄
                   </span>
                 </div>
 
@@ -385,8 +384,8 @@ const User = () => {
               <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <Unity
                   style={{
-                    display: "flex",
-                    justifySelf: "center",
+                    display:"flex",
+                    justifySelf:"center",
                     width: "80%",
                     height: "80%",
                     justifyContent: "center",
@@ -419,31 +418,30 @@ const User = () => {
                   loader={<h4>Loading...</h4>}
                   endMessage={
                     <p style={{ textAlign: 'center' }}>
-                      조회할 데이터가 없습니다.
-                    </p>
-                  }
-                >
+            조회할 데이터가 없습니다.
+          </p>
+  }
+>
 
-                  <div >
-                    <div className="post-box flex flex-wrap">
-                      {items.map((item: any) => {
-                        return <div className="post-item" key={item.id}>
-                          <div><img style={{ width: '300px', height: '300px' }} src={`https://source.unsplash.com/random/${item.id}`} /></div>
-                          <div>{item.id}</div>
-                          <div style={{ width: '319px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</div>
-                          <div>{item.email}</div>
+  <div >
+    <div className="post-box flex flex-wrap">
+      {items.map((item :any)=>{
+        return <div className="post-item" key={item.id}>
+                  <div><img style={{width:'300px', height:'300px'}} src = {`https://source.unsplash.com/random/${item.id}`}/></div>
+                  <div>{item.id}</div>
+                  <div style={{width: '319px',whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{item.name}</div>
+                  <div>{item.email}</div>
+      
+        </div>})}
+    </div>
+  </div>
 
-                        </div>
-                      })}
-                    </div>
-                  </div>
-
-                </InfiniteScroll>
-
+</InfiniteScroll>      
+                
               </section>
 
             </section>
-          </section>
+            </section>
         </div>
       </Layout>
     </>
