@@ -11,9 +11,7 @@ interface LayoutProps {
 
 export default function Layout({ seoTitle, children }: LayoutProps) {
   const router = useRouter();
-  const onClick = () => {
-    router.back();
-  };
+
   return (
     <div>
       <Head>

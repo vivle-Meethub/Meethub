@@ -3,7 +3,7 @@ import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
   const router = useRouter();
