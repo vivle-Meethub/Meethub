@@ -1,7 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState,useEffect } from "react";
 
-const Post = (prop:any) =>{
+const Post = (props:any) =>{
 
     const [items,setItems] = useState<any>([]);
     const [hasMore,sethasMore] = useState(true);

@@ -1,13 +1,17 @@
 import axios from "axios";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
+import useStore from "../../store";
 
 import { useRouter } from "next/router";
 import Profile from "../../components/user/Profile";
 import Post from "../../components/user/Post";
 import Layout from "../../components/Layout";
+import ViewToggle from "../../components/user/ViewToggle";
+
+
 
 const User = () => {
   const router = useRouter();
@@ -15,8 +19,8 @@ const User = () => {
 
   const key = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
-  const fileInput = useRef<any>();
   //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
+
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext({
@@ -32,7 +36,9 @@ const User = () => {
   const [temperature, setTemperature] = useState("");
   const [weather, setWeather] = useState("");
   const [today, setToday] = useState(new Date().toLocaleDateString());
-  const [is3D, setIs3D] = useState(true);
+  
+
+  const is3D = useStore((state:any) => state.is3D)
 
 
   useEffect(() => {
@@ -43,12 +49,6 @@ const User = () => {
     sendWeatherToUnity();
 
   }, [commitCount]);
-
-
-
-
-  
-
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -159,28 +159,8 @@ const User = () => {
               )}
 
               <div className="season-test flex">
-                <div className="unity-container flex items-center mr-20">
-                  <div
-                    onClick={() => {
-                      setIs3D(!is3D);
-                    }}
-                    className="relative inline-block w-10 mr-2 align-middle select-none"
-                  >
-                    <input
-                      type="checkbox"
-                      name="toggle"
-                      id="Green"
-                      className="checked:bg-green-500 outline-none focus:outline-none right-4 checked:right-0 duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                    />
-                    <label
-                      htmlFor="Green"
-                      className="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-                    ></label>
-                  </div>
-                  <span className="text-gray-400 font-medium">
-                    {is3D ? "3D" : "2D"}
-                  </span>
-                </div>
+
+              <ViewToggle/>
 
                 <div
                   onClick={() => {
@@ -252,6 +232,8 @@ const User = () => {
                 </div>
 
               </div>
+
+              {/* ==================== unity section ==================== */}
               <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <Unity
                   style={{
@@ -278,7 +260,6 @@ const User = () => {
               ></div>
 
               {/* ==================== post section ==================== */}
-              {/* 포스트 레이아웃을 구축하고 예시 이미지를 넣어 무한 스크롤을 테스트*/}
                   <Post/>
 
             </section>

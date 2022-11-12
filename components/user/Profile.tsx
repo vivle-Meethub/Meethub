@@ -5,7 +5,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState } from "react";
 
 
-const Profile = (prop:any) =>{
+const Profile = (props:any) =>{
 
     const [progress,setProgress] = useState(0);
     const [photoURL, setPhotoURL] = useState('');
@@ -61,27 +61,27 @@ const Profile = (prop:any) =>{
         overflow: "hidden",
         }}
         className="profile"
-        src={`https://github.com/${prop.username}.png`}
+        src={`https://github.com/${props.username}.png`}
         alt="profile"
     />
     </div>
 
 
-    <div className="font-bold text-xl px-5 py-5">{prop.username}</div>
+    <div className="font-bold text-xl px-5 py-5">{props.username}</div>
 
     <div>
-    <a href={`https://github.com/${prop.username}`}>
+    <a href={`https://github.com/${props.username}`}>
         <img
-        src={`https://github-readme-stats.vercel.app/api?username=${prop.username}&theme=vue&show_icons=true&line_height=40&count_private=true&hide=contribs`}
-        alt={`${prop.username}'s GitHub Stats`}
+        src={`https://github-readme-stats.vercel.app/api?username=${props.username}&theme=vue&show_icons=true&line_height=40&count_private=true&hide=contribs`}
+        alt={`${props.username}'s GitHub Stats`}
         />
     </a>
     </div>
 
     <div>
     <img
-        src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${prop.username}&card_width=500`}
-        alt={`${prop.username}'s GitHub Stats`}
+        src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${props.username}&card_width=500`}
+        alt={`${props.username}'s GitHub Stats`}
     />
     </div>
 
