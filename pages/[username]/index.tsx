@@ -4,12 +4,12 @@ import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
 import useStore from "../../store";
-
 import { useRouter } from "next/router";
 import Profile from "../../components/user/Profile";
 import Post from "../../components/user/Post";
 import Layout from "../../components/Layout";
 import ViewToggle from "../../components/user/ViewToggle";
+import SeasonButton from "../../components/user/SeasonButton";
 
 
 
@@ -17,7 +17,7 @@ const User = () => {
   const router = useRouter();
   const { username }: any = router.query;
 
-  const key = "1df5e2040e1f1297719ed96af9dbaeb6";
+  const weatherApiKey = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
   //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
 
@@ -95,7 +95,7 @@ const User = () => {
 
       await axios({
         method: "GET",
-        url: `https://api.openweathermap.org/data/2.5/weather?lat=${gsLocation?.latitude}&lon=${gsLocation?.longitude}&appid=${key}`,
+        url: `https://api.openweathermap.org/data/2.5/weather?lat=${gsLocation?.latitude}&lon=${gsLocation?.longitude}&appid=${weatherApiKey}`,
       }).then((response) => {
         console.log(response);
 
@@ -159,78 +159,44 @@ const User = () => {
               )}
 
               <div className="season-test flex">
-
-              <ViewToggle/>
+                <ViewToggle/>
 
                 <div
-                  onClick={() => {
+                  onClick={()=>{
                     sendMessage("GameManager", "GetDate", "03/30/2022");
                     sendUserToUnity();
-                  }}
-                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
-                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
-                              active:border-b-[0px]
-                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
-                              border-b-[1px] border-[#b8e994]
-                            "
+                  }}  
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                  🌸
-                  </span>
+                  <SeasonButton emoji="🌸"/>
                 </div>
 
-
                 <div
-                  onClick={() => {
+                  onClick={()=>{
                     sendMessage("GameManager", "GetDate", "08/30/2022");
                     sendUserToUnity();
-                  }}
-                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
-                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
-                              active:border-b-[0px]
-                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
-                              border-b-[1px] border-[#b8e994]
-                            "
+                  }}  
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                  🌴
-                  </span>
+                    <SeasonButton emoji="🌴"/>
                 </div>
 
                 <div
-                  onClick={() => {
+                  onClick={()=>{
                     sendMessage("GameManager", "GetDate", "09/30/2022");
                     sendUserToUnity();
-                  }}
-                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
-                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
-                              active:border-b-[0px]
-                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
-                              border-b-[1px] border-[#b8e994]
-                            "
+                  }}  
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                  🍁
-                  </span>
+                  <SeasonButton emoji="🍁"/>
                 </div>
+
 
                 <div
-                  onClick={() => {
+                  onClick={()=>{
                     sendMessage("GameManager", "GetDate", "12/30/2022");
                     sendUserToUnity();
-                  }}
-                  className="my-5 mx-1 button w-12 h-16 bg-white rounded-lg cursor-pointer select-none
-                              active:translate-y-2  active:[box-shadow:0_0px_0_0_#78e08f,0_0px_0_0_#b8e994]
-                              active:border-b-[0px]
-                              transition-all duration-150 [box-shadow:0_10px_0_0_#78e08f,0_15px_0_0_#b8e994]
-                              border-b-[1px] border-[#b8e994]
-                            "
+                  }}  
                 >
-                  <span className="flex flex-col justify-center items-center h-full text-black font-bold text-lg border-[1px] border-[#b8e994] rounded-[5px]">
-                  ⛄
-                  </span>
+                  <SeasonButton emoji="⛄"/>
                 </div>
-
               </div>
 
               {/* ==================== unity section ==================== */}
