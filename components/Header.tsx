@@ -1,12 +1,22 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+
 const Header = ()=>{
 
-    const onChange = (e:any)=>{
-        console.log(e.target.value);
-    }
-
+    const router = useRouter();
+    const [username, setUsername] = useState("");
+    
+    const onCheckEnter = (e:any) => {
+        if(e.key === 'Enter') {
+            e.preventDefault();
+            router.push(`/${username}`);
+        }
+      }
+    
+    
     return(
         <>
-<header className="w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16 rounded-2xl z-40">
+<header className="fixed top-0 left-0 right-0 w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16  z-40">
     <div className="relative z-20 flex flex-col justify-center h-full px-3 mx-auto flex-center">
         <div className="relative items-center pl-1 flex w-full lg:max-w-68 sm:pr-2 sm:ml-0">
             <div className="container relative left-0 z-50 flex w-3/4 h-auto h-full">
@@ -22,17 +32,34 @@ const Header = ()=>{
                         </path>
                     </svg>
 
+                    <form onKeyPress={onCheckEnter}>
+                        <input 
+                        name="text" 
+                        onChange={(e) => setUsername(e.target.value)}
+                        type="text" 
+                        className=" block w-full py-1.5 pl-10 pr-4 leading-normal rounded-2xl focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#b8e994] ring-opacity-90 bg-gray-100 dark:bg-gray-800 text-gray-400" 
+                        placeholder="Search"
+                        />    
+
+                    </form>
+
                     <form>
-                        <input name="text" onChange={onChange} type="text" className="block w-full py-1.5 pl-10 pr-4 leading-normal rounded-2xl focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 ring-opacity-90 bg-gray-100 dark:bg-gray-800 text-gray-400 aa-input" placeholder="Search"/>    
+                           
 
                     </form>
 
             
                     </div>
                 </div>
-                <div className="relative p-1 flex items-center justify-end w-1/4 ml-5 mr-4 sm:mr-0 sm:right-auto">
+                <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
                     <a href="#" className="block relative">
-                        <img alt="profil" src="/images/person/1.jpg" className="mx-auto object-cover rounded-full h-10 w-10 "/>
+                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    </a>
+                </div>
+
+                <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
+                    <a href="#" className="block relative">
+                        <img alt="profil" src="/img/power.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
                     </a>
                 </div>
             </div>

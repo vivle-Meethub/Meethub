@@ -42,7 +42,7 @@ const Profile = (props:any) =>{
     return(
         <>
  <section className="profile flex-col items-center justify-center relative">
-    <div className="sticky top-0">
+    <div className="sticky top-16">
 
     <div
     style={{

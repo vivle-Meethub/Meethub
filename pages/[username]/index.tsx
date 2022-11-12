@@ -138,7 +138,7 @@ const User = () => {
     <>
       <Layout seoTitle={username}>
 
-        <div className="App flex-col-reverse">
+        <div className="App flex-col-reverse mt-16">
           <section className="user flex justify-center">
 
             
