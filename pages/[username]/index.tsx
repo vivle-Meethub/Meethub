@@ -158,46 +158,67 @@ const User = () => {
                 </div>
               )}
 
-              <div className="season-test flex">
+              <div className="season-test flex p-4">
                 <ViewToggle/>
 
-                <div
+                <div className="flex items-center">
+                  <span
+                  className="cursor-pointer"
                   onClick={()=>{
                     sendMessage("GameManager", "GetDate", "03/30/2022");
                     sendUserToUnity();
-                  }}  
-                >
-                  <SeasonButton emoji="🌸"/>
+                  }}
+                  >
+                    🌸
+                  </span>
+                  
+                  {/* <SeasonButton emoji="🌸"/> */}
                 </div>
 
-                <div
+
+                <div className="flex items-center">
+                  <span
+                  className="cursor-pointer"
                   onClick={()=>{
-                    sendMessage("GameManager", "GetDate", "08/30/2022");
+                    sendMessage("GameManager", "GetDate", "06/30/2022");
                     sendUserToUnity();
-                  }}  
-                >
-                    <SeasonButton emoji="🌴"/>
+                  }}
+                  >
+                    🌴
+                  </span>
+                  
+                  {/* <SeasonButton emoji="🌴"/> */}
                 </div>
 
-                <div
+                <div className="flex items-center">
+                  <span
+                  className="cursor-pointer"
                   onClick={()=>{
                     sendMessage("GameManager", "GetDate", "09/30/2022");
                     sendUserToUnity();
-                  }}  
-                >
-                  <SeasonButton emoji="🍁"/>
+                  }}
+                  >
+                    🍁
+                  </span>
+                  
+                  {/* <SeasonButton emoji="🍁"/> */}
                 </div>
 
-
-                <div
+                <div className="flex items-center">
+                  <span
+                  className="cursor-pointer"
                   onClick={()=>{
                     sendMessage("GameManager", "GetDate", "12/30/2022");
                     sendUserToUnity();
-                  }}  
-                >
-                  <SeasonButton emoji="⛄"/>
+                  }}
+                  >
+                    ⛄
+                  </span>
+                  
+                  {/* <SeasonButton emoji="⛄"/> */}
                 </div>
-              </div>
+                </div>
+
 
               {/* ==================== unity section ==================== */}
               <div style={is3D ? { display: "flex" } : { display: "none" }}>

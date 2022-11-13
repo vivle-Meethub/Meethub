@@ -3,9 +3,10 @@ import { useRouter } from "next/router";
 
 const Header = ()=>{
 
+    const [showMessageModal, setShowMessageModal] = useState(false);
+
     const router = useRouter();
     const [username, setUsername] = useState("");
-    
     const onCheckEnter = (e:any) => {
         if(e.key === 'Enter') {
             e.preventDefault();
@@ -52,8 +53,10 @@ const Header = ()=>{
                     </div>
                 </div>
                 <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
-                    <a href="#" className="block relative">
-                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    <a href="#" className="block relative"
+                    onClick={() => setShowMessageModal(true)}
+                    >
+                        <img alt="profil" src="/img/envelope.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
                     </a>
                 </div>
 
@@ -64,6 +67,177 @@ const Header = ()=>{
                 </div>
             </div>
         </div>
+
+        {/* Message Modal section */}
+        <section>
+      {showMessageModal ? (
+        <>
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                    쪽지 보내기
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowMessageModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                {/*body*/}
+
+                <div className="container p-2 mx-auto sm:p-4 dark:text-gray-100">
+	{/* <h2 className="mb-4 text-2xl font-semibold leading-tight">Invoices</h2> */}
+	<div className="overflow-x-auto">
+		<table className="min-w-full text-xs">
+
+			<tbody>
+				<tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
+					<td className="p-3">
+						<p>DaeyeonKim97</p>
+					</td>
+					<td className="p-3">
+						<p>코딩 과외하고 있습니다.</p>
+					</td>
+					<td className="p-3">
+						<p>14 Jan 2022</p>
+						<p className="dark:text-gray-400">Friday</p>
+					</td>
+					<td className="p-3">
+
+                    <p className="dark:text-gray-400 flex justify-center items-center">
+                            <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-yellow-500 block"></span>
+                            <span>Set as away</span>  
+                    </p>
+					</td>
+
+					<td className="p-3 text-right">
+						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
+                        <a href="#" className="block relative"
+                    >
+                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    </a>
+						</span>
+					</td>
+				</tr>
+				<tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
+					<td className="p-3">
+						<p>DwarfThema</p>
+					</td>
+					<td className="p-3">
+						<p>마 니 내랑 사업 하나 하자</p>
+					</td>
+					<td className="p-3">
+						<p>13 Jan 2022</p>
+						<p className="dark:text-gray-400">thursday</p>
+					</td>
+					<td className="p-3">
+                    <p className="dark:text-gray-400 flex justify-center items-center">
+                            <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-red-600 block"></span>
+                            <span>Do not Disturb</span>  
+                    </p>
+					</td>
+
+					<td className="p-3 text-right">
+						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
+                        <a href="#" className="block relative"
+                    >
+                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    </a>
+						</span>
+					</td>
+				</tr>
+				<tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
+					<td className="p-3">
+						<p>pjhhs021</p>
+					</td>
+					<td className="p-3">
+						<p>언제 한 번 고기 먹으러 가시죠</p>
+					</td>
+					<td className="p-3">
+						<p>12 Jan 2022</p>
+						<p className="dark:text-gray-400">Wednesday</p>
+					</td>
+					<td className="p-3">
+
+                    <p className="dark:text-gray-400 flex justify-center items-center">
+                            <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-red-600 block"></span>
+                            <span>Do not Disturb</span>  
+                    </p>
+					</td>
+
+					<td className="p-3 text-right">
+						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
+                        <a href="#" className="block relative"
+                    >
+                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    </a>
+						</span>
+					</td>
+				</tr>
+				<tr className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
+					<td className="p-3">
+						<p>admin</p>
+					</td>
+					<td className="p-3">
+						<p>meethub에 오신 것을 환영합니다!</p>
+					</td>
+					<td className="p-3">
+						<p>11 Jan 2022</p>
+						<p className="dark:text-gray-400">Tuesday</p>
+					</td>
+					<td>
+                        
+						<p className="dark:text-gray-400 flex justify-center items-center">
+                            <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-green-700 block"></span>
+                            <span>Active</span>
+                            
+                        </p>
+                        
+					</td>
+					<td className="p-3 text-right">
+						<span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
+                        <a href="#" className="block relative"
+                    >
+                        <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 "/>
+                    </a>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+                
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowMessageModal(false)}
+                  >
+                    닫기
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
+
+    </section>
     </header>
 
         </>
