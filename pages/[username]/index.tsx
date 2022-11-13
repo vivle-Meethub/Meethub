@@ -50,6 +50,66 @@ const User = () => {
 
   }, [commitCount]);
 
+  const fetchComments = async() => {
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=20`
+    )
+
+    const data = await res.json();
+    return data;
+  };
+
+  
+  const fetchData = async() => {
+    const commentsFormServer = await fetchComments();
+
+    setItems([...items, ...commentsFormServer]);
+
+    if (commentsFormServer.length === 0 || commentsFormServer.length < 20) {
+        sethasMore(false);
+    }
+    setPage(page + 1);
+  };
+
+  
+  /* s3 업로드 테스트 */
+  const uploadFile = async (e:any) => {
+    e.preventDefault();
+    const s3:any = new ReactS3Client(s3Config);
+    const file = fileInput.current.files[0];
+    const newFileName = uuid();
+
+    try {
+      if(file) {
+        console.log(file.type);
+        if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
+          alert('JPEG, PNG, JPG 파일만 업로드 가능합니다.');
+          e.target.value = null;
+        } else{
+
+          if (file.size > 10 * 1024 * 1024) {
+            alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
+            e.target.value = null;              
+          } else {
+
+            const res = await s3.uploadFile(file, newFileName);
+            console.log(res);
+        
+            if (res.status === 204) {
+              console.log("파일업로드 완료");
+            } else {
+              console.log("파일업로드 실패");
+            }
+
+          }
+        }
+      }
+
+  } catch (exception) {
+      console.log(exception);
+  }
+
+  }
   function getLocation() {
     if (navigator.geolocation) {
       // GPS를 지원하면
