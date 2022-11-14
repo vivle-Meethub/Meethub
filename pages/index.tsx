@@ -1,11 +1,7 @@
 import type { NextPage } from "next";
-import { useState } from "react";
-import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const [username, setUsername] = useState("");
 
   return (
     <Layout seoTitle="Main">
@@ -75,3 +71,5 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+
