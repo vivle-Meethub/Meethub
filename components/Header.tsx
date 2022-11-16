@@ -167,7 +167,7 @@ const Header = () => {
 
                                 <p className="dark:text-gray-400 flex justify-center items-center">
                                   <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-yellow-500 block"></span>
-                                  <span>Set as away</span>
+                                  <span>Idle</span>
                                 </p>
                               </td>
 
@@ -250,7 +250,7 @@ const Header = () => {
 
                                 <p className="dark:text-gray-400 flex justify-center items-center">
                                   <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-green-700 block"></span>
-                                  <span>Active</span>
+                                  <span>Online</span>
 
                                 </p>
 

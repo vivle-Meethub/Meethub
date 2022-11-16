@@ -4,6 +4,7 @@ import { storage } from '../../firebaseConfig';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState,useRef } from "react";
 import { createPopper } from "@popperjs/core";
+import UserStatus from './UserStatus';
 
 
 const Profile = (props:any) =>{
@@ -16,6 +17,32 @@ const Profile = (props:any) =>{
     const [dropdownPopoverShow, setDropdownPopoverShow] =useState(false);
     const btnDropdownRef:any = useRef();
     const popoverDropdownRef:any = useRef();
+    const [dropdown, setDropdown] = useState(false);
+
+    const [myStatus, setMyStatus] = useState('online');
+   
+
+    // const userStatusUI = {
+    //   "online": 
+    //   <small className='flex items-center justify-center cursor-pointer'>
+    //     <span className='text-xs'>Online</span>
+    //     <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-green-700"></span>
+    //   </small>
+    //   ,
+    //   "idle": 
+    //   <small className='flex items-center justify-center cursor-pointer'>
+    //     <span className='text-xs'>Online</span>
+    //     <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-red-700"></span>
+    //   </small>
+    //   ,
+    //   "doNotDisturb": 
+    //   <small className='flex items-center justify-center cursor-pointer'>
+    //     <span className='text-xs'>Online</span>
+    //     <span className="ml-2 mr-3 rounded-full w-3 h-3 bg-yellow-700"></span>
+    //   </small>
+    // };
+
+    
 
     let color = 'white'
     let bgColor;
@@ -125,85 +152,41 @@ const Profile = (props:any) =>{
             <div  className="text-xs px-3 bg-yellow-200 text-yellow-800 rounded-full">Badge</div>
         </div>
 
-
-    {/* dropdown section */}
-
-    <section>
-      <div className="flex flex-wrap">
-        <div className="w-full sm:w-6/12 md:w-4/12 px-4">
-          <div className="relative inline-flex align-middle w-full">
-            {/* <button
-              className={
-                "text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 " +
-                bgColor
-              }
-              type="button"
-              ref={btnDropdownRef}
-              onClick={() => {
-                dropdownPopoverShow
-                  ? closeDropdownPopover()
-                  : openDropdownPopover();
-              }}
-            >
-              {color === "white" ? "White Dropdown" : color + " Dropdown"}
-            </button> */}
-
-            {/* <div
-              ref={popoverDropdownRef}
-              className={
-                (dropdownPopoverShow ? "block " : "hidden ") +
-                (color === "white" ? "bg-white " : bgColor + " ") +
-                "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
-              }
-              style={{ minWidth: "12rem" }}
-            >
-              <a
-                href="#pablo"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " +
-                  (color === "white" ? " text-slate-700" : "text-white")
-                }
-                onClick={e => e.preventDefault()}
-              >
-                Action
-              </a>
-              <a
-                href="#pablo"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " +
-                  (color === "white" ? " text-slate-700" : "text-white")
-                }
-                onClick={e => e.preventDefault()}
-              >
-                Another action
-              </a>
-              <a
-                href="#pablo"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " +
-                  (color === "white" ? " text-slate-700" : "text-white")
-                }
-                onClick={e => e.preventDefault()}
-              >
-                Something else here
-              </a>
-              <div className="h-0 my-2 border border-solid border-t-0 border-slate-800 opacity-25" />
-              <a
-                href="#pablo"
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent " +
-                  (color === "white" ? " text-slate-700" : "text-white")
-                }
-                onClick={e => e.preventDefault()}
-              >
-                Seprated link
-              </a>
-            </div> */}
-          </div>
-        </div>
+        {/* dropdown section */}
+        <div>
+      <div onClick={() => setDropdown(!dropdown)} className="p-3 bg-white dark:bg-darkSecondary shadow-lg rounded-xl flex items-center justify-center w-44 cursor-pointer">
+        <UserStatus status = {myStatus}/>
       </div>
+      <ul
+        className={
+          dropdown
+            ? 'flex my-1 items-center space-x-2 p-2 rounded-xl bg-white dark:bg-darkSecondary shadow-2xl w-fit'
+            : 'invisible inline-flex my-1 items-center space-x-2 p-2 rounded-xl bg-white dark:bg-darkSecondary shadow-2xl w-fit'
+        }>
+          <li onClick={()=>{
+            setMyStatus('online')
+            setDropdown(false)
+          }}>
+            <UserStatus status='online'/>
+          </li>
 
-    </section>
+          <li onClick={()=>{
+            setMyStatus('idle')
+            setDropdown(false)
+          }}>
+            <UserStatus status='idle'/>
+          </li>
+
+          <li onClick={()=>{
+            setMyStatus('doNotDisturb')
+            setDropdown(false)
+          }}>
+            <UserStatus status='doNotDisturb'/>
+          </li>
+        
+      </ul>
+    </div>
+
 
     {/* modal section */}
     <section>
@@ -266,82 +249,7 @@ const Profile = (props:any) =>{
 
 </div>
 
-    {/* <div className="font-bold text-xl px-5 py-5">{props.username}</div> */}
 
-    <div>
-    <a href={`https://github.com/${props.username}`}>
-        <img
-        src={`https://github-readme-stats.vercel.app/api?username=${props.username}&theme=vue&show_icons=true&line_height=40&count_private=true&hide=contribs`}
-        alt={`${props.username}'s GitHub Stats`}
-        />
-    </a>
-    </div>
-
-    <div>
-    <img
-        src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${props.username}&card_width=500`}
-        alt={`${props.username}'s GitHub Stats`}
-    />
-    </div>
-
-
-    {/* status drop down */}
-    {/* className="absolute z-10 bg-white border mt-2 rounded w-max"  */}
-    <div  
-          ref={popoverDropdownRef}
-          className={
-            (dropdownPopoverShow ? "block " : "hidden ") +
-            (color === "white" ? "bg-white " : bgColor + " ") +
-            "absolute z-10 bg-white border mt-2 rounded w-max text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
-          }
-          style={{ minWidth: "12rem" }}
-    >
-        <div className="flex items-center p-2 hover:bg-gray-200 cursor-pointer">
-            <div className="ml-2 mr-3 rounded-full w-3 h-3 bg-green-700"></div>
-            <div  className="pl-1 pr-2 mr-10 text-gray-700 text-sm">
-                Active
-                <div className="text-xs text-gray-500">Based on activity</div>
-            </div>
-            <div className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-        </div>
-        <div className="flex items-center p-2 hover:bg-gray-200 cursor-pointer">
-            <div className="ml-2 mr-3 rounded-full w-3 h-3 bg-red-600"></div>
-            <div className="pl-1 pr-2 mr-10 text-gray-700 text-sm">
-                Do not Disturb
-                <div className="text-xs text-gray-500">Mute notifications</div>
-            </div>
-        </div>
-        <div className="flex items-center p-2 hover:bg-gray-200 cursor-pointer">
-            <div className="ml-2 mr-3 rounded-full w-3 h-3 bg-yellow-500"></div>
-            <div className="pl-1 pr-2 mr-10 text-gray-700 text-sm">
-                Set as away
-            </div>
-        </div>
-        <div className="py-2 border-t">
-          <div className="flex items-center p-2 hover:bg-gray-200 cursor-pointer ">
-              <div className="ml-2 mr-3">
-               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-               </svg>
-               </div>
-               <div className="pl-1 pr-2 mr-10 text-gray-700 text-sm">
-                Add a Status
-               </div>
-          </div>
-        </div>
-        <div className="py-2 border-t">
-            <div className="flex items-center p-2 hover:bg-gray-200 cursor-pointer ">
-                <div className="ml-2 mr-3"></div>
-                 <div className="pl-1 pr-2 mr-10 text-gray-700 text-sm">
-                  Chat Notification settings
-                 </div>
-            </div>
-          </div>
-    </div>
 
     {/* <form onSubmit={formHandler}>
     <input type="file" className="input"/>
@@ -363,35 +271,7 @@ const Profile = (props:any) =>{
     )} */}
 
 
-<div className='mt-3'>
-      <button  type="button"
-       className="flex items-center justify-between rounded-full border p-1.5"
-       ref={btnDropdownRef}
-       onClick={() => {
-         dropdownPopoverShow
-           ? closeDropdownPopover()
-           : openDropdownPopover();
-       }}
-       
-       >
-          <div className="ml-2 mr-1 rounded-full w-3 h-3 bg-green-700"></div>
-          <div className="pl-1 pr-2 text-gray-700 text-sm">
-          Active
-          </div>
-          <div className="mr-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-              </svg>
-          </div>
-      </button>
     </div>
-
-
-    </div>
-
-
-
-
     </section>
         </>
     )
