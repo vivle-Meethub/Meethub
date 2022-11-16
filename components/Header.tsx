@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signIn,signOut, useSession } from 'next-auth/react';
 
 const Header = () => {
 
@@ -7,12 +8,64 @@ const Header = () => {
 
   const router = useRouter();
   const [username, setUsername] = useState("");
+  const { data: session, status } = useSession();
+
   const onCheckEnter = (e: any) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       router.push(`/${username}`);
     }
   }
+
+
+  let messageBox = (
+                <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
+                <a href="#" className="block relative"
+                  onClick={() => setShowMessageModal(true)}
+                >
+                  <img alt="message" src="/img/envelope.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
+                </a>
+              </div>
+  );
+
+  let logout = (
+              <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
+                {session?
+                  (
+                  <button onClick={()=>signOut()} className="block relative">
+                    <img alt="logout" src="/img/poweron.svg" className="mx-auto object-cover rounded-full h-6 w-6 hover"/>
+                  </button>
+                  ) :
+
+                  (
+                    <a href="/" className="block relative">
+                    <img alt="logout" src="/img/power.svg" className="mx-auto object-cover rounded-full h-6 w-6 hover"/>
+                  </a>
+                  )
+                }
+
+            </div>
+  );
+
+  let name = (<div className="text-">{session?.user?.name}</div>)
+
+
+  // if (session) {
+  //   left = (
+  //     <div className="left">
+
+  //     </div>
+  //   );
+  // }
+
+
+  // if (!session) {
+  //   left = (
+  //     <div className="left">
+
+  //     </div>
+  //   );
+  // }
 
 
   return (
@@ -23,7 +76,7 @@ const Header = () => {
 
           {/* meet hub logo */}
           <div className="meethub-logo-box mx-5">
-                  <a href="#" className="block relative">
+                  <a href="/" className="block relative">
                     <img alt="meethub-logo" src="https://avatars.githubusercontent.com/u/65522153?v=4" className="mx-auto object-cover rounded-full h-16 w-16 " />
                   </a>
               </div>
@@ -59,21 +112,11 @@ const Header = () => {
               </div>
             </div>
 
-                {/* message-box */}
-            <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
-              <a href="#" className="block relative"
-                onClick={() => setShowMessageModal(true)}
-              >
-                <img alt="message" src="/img/envelope.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
-              </a>
-            </div>
-
-                {/* logout */}
-            <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
-              <a href="#" className="block relative">
-                <img alt="logout" src="/img/power.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
-              </a>
-            </div>
+            {session?name:""}
+            {session?messageBox:null}
+            {logout}
+            
+              
           </div>
         </div>
 
