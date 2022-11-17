@@ -5,6 +5,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useState,useRef } from "react";
 import { createPopper } from "@popperjs/core";
 import UserStatus from './UserStatus';
+import { SkillTooltip } from './SkillTooltip';
 
 
 const Profile = (props:any) =>{
@@ -146,10 +147,10 @@ const Profile = (props:any) =>{
     </div>
 
     <div className="flex space-x-2 my-4">
-            <div  className="text-xs px-3 bg-gray-200 text-gray-800 rounded-full ">Badge</div>
-            <div  className="text-xs px-3 bg-red-200 text-red-800 rounded-full">Badge</div>
-            <div  className="text-xs px-3 bg-orange-200 text-orange-800 rounded-full">Badge</div>
-            <div  className="text-xs px-3 bg-yellow-200 text-yellow-800 rounded-full">Badge</div>
+            <SkillTooltip/>
+            <SkillTooltip/>
+            <SkillTooltip/>
+            <SkillTooltip/>
         </div>
 
         {/* dropdown section */}
