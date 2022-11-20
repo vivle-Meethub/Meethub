@@ -7,7 +7,7 @@ import useStore from "../../store";
 import { useRouter } from "next/router";
 import Profile from "../../components/user/Profile";
 import Post from "../../components/user/Post";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 
 const User = () => {
