@@ -7,15 +7,16 @@ import useStore from "../../store";
 import { useRouter } from "next/router";
 import Profile from "../../components/user/Profile";
 import Post from "../../components/user/Post";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
-import SeasonButton from "../../components/user/SeasonButton";
-
-
 
 const User = () => {
   const router = useRouter();
   const { username }: any = router.query;
+  
+  let date = new Date();
+  let today = (date.getMonth()+1) +'/' + date.getDate() + '/' + date.getFullYear();
+
 
   const weatherApiKey = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
@@ -31,85 +32,37 @@ const User = () => {
     });
 
   const loadingPercentage = Math.round(loadingProgression * 100);
-  const [commitCount, setCommitCount] = useState("");
-  const [location, setLocation] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [weather, setWeather] = useState("");
-  const [today, setToday] = useState(new Date().toLocaleDateString());
-  
 
   const is3D = useStore((state:any) => state.is3D)
+  const commitCount = useStore((state:any) => state.commitCount)
+  const setCommitCount = useStore((state:any) => state.setCommitCount)
+
+  const location = useStore((state:any) => state.location)
+  const setLocation = useStore((state:any) => state.setLocation)
+
+  const temperature = useStore((state:any) => state.temperature)
+  const setTemperature = useStore((state:any) => state.setTemperature)
+
+  const weather = useStore((state:any) => state.weather)
+  const setWeather = useStore((state:any) => state.setWeather)
 
 
   useEffect(() => {
+    
+
     setTimeout(() => {
+      sendWeatherToUnity();  
       sendUserToUnity();
-    }, 2000);
+    },2000);
+        
 
-    sendWeatherToUnity();
+  }, [username]);
 
+  useEffect(() => {
+    sendWeatherToUnity();       
+      sendUserToUnity();
   }, [commitCount]);
 
-  const fetchComments = async() => {
-    const res = await fetch(
-      `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=20`
-    )
-
-    const data = await res.json();
-    return data;
-  };
-
-  
-  const fetchData = async() => {
-    const commentsFormServer = await fetchComments();
-
-    setItems([...items, ...commentsFormServer]);
-
-    if (commentsFormServer.length === 0 || commentsFormServer.length < 20) {
-        sethasMore(false);
-    }
-    setPage(page + 1);
-  };
-
-  
-  /* s3 업로드 테스트 */
-  const uploadFile = async (e:any) => {
-    e.preventDefault();
-    const s3:any = new ReactS3Client(s3Config);
-    const file = fileInput.current.files[0];
-    const newFileName = uuid();
-
-    try {
-      if(file) {
-        console.log(file.type);
-        if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg') {
-          alert('JPEG, PNG, JPG 파일만 업로드 가능합니다.');
-          e.target.value = null;
-        } else{
-
-          if (file.size > 10 * 1024 * 1024) {
-            alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
-            e.target.value = null;              
-          } else {
-
-            const res = await s3.uploadFile(file, newFileName);
-            console.log(res);
-        
-            if (res.status === 204) {
-              console.log("파일업로드 완료");
-            } else {
-              console.log("파일업로드 실패");
-            }
-
-          }
-        }
-      }
-
-  } catch (exception) {
-      console.log(exception);
-  }
-
-  }
   function getLocation() {
     if (navigator.geolocation) {
       // GPS를 지원하면
@@ -148,6 +101,8 @@ const User = () => {
   }
 
   const sendWeatherToUnity = async () => {
+    sendMessage("GameManager", "GetDate", today);
+
     try {
       const gsLocation: any = await getLocation();
 
@@ -167,6 +122,8 @@ const User = () => {
         );
         setWeather(response.data.weather[0].main);
 
+        
+
         console.log("location : " + location);
         console.log("temperature : " + temperature);
         console.log("weather : " + weather);
@@ -175,11 +132,13 @@ const User = () => {
         sendMessage("GameManager", "GetLocation", location);
         sendMessage("GameManager", "GetTemperature", temperature);
         sendMessage("GameManager", "GetWeather", weather);
-        sendMessage("GameManager", "GetDate", today);
+      
       });
     } catch (err) {
       console.log(err);
     }
+
+
   };
 
   const sendUserToUnity = async () => {
@@ -190,8 +149,10 @@ const User = () => {
     console.log("username : " + username);
     console.log("commit count : " + commitCount);
     setCommitCount(words[0]);
+
     sendMessage("GameManager", "GetUsername", username);
-    sendMessage("GameManager", "GetCommit", words[0]);
+    sendMessage("GameManager", "GetCommit", commitCount);
+
   };
 
   return (
@@ -209,7 +170,6 @@ const User = () => {
 
             {/* ==================== unity-post section ==================== */}
             <section
-              style={{ marginTop: "20px", marginLeft: "30px" }}
               className="unity-post"
             >
               {isLoaded === false && (
@@ -221,6 +181,8 @@ const User = () => {
               <div className="season-test flex p-4">
                 <ViewToggle/>
 
+
+                <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <div className="flex items-center">
                   <span
                   className="cursor-pointer"
@@ -277,17 +239,21 @@ const User = () => {
                   
                   {/* <SeasonButton emoji="⛄"/> */}
                 </div>
+
+              </div>
+
+
                 </div>
 
 
               {/* ==================== unity section ==================== */}
-              <div style={is3D ? { display: "flex" } : { display: "none" }}>
+              <div style={is3D ? { display: "flex", justifyContent:'center' } : { display: "none" }}>
                 <Unity
                   style={{
                     display:"flex",
                     justifySelf:"center",
-                    width: "80%",
-                    height: "80%",
+                    width: "93%",
+                    height: "100%",
                     justifyContent: "center",
                     alignSelf: "center",
                   }}
@@ -295,9 +261,9 @@ const User = () => {
                 />
               </div>
 
-              <div style={is3D ? { display: "none" } : { display: "block" }}>
+              <div style={is3D ? { display: "none" } : { display: "flex", justifyContent:'center' }}>
                 {username && isLoaded && (
-                  <GitHubCalendar year={year} username={username} />
+                  <GitHubCalendar year={year} username={username} blockSize={17}/>
                 )}
               </div>
 
