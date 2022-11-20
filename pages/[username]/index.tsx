@@ -13,6 +13,10 @@ import ViewToggle from "../../components/user/ViewToggle";
 const User = () => {
   const router = useRouter();
   const { username }: any = router.query;
+  
+  let date = new Date();
+  let today = (date.getMonth()+1) +'/' + date.getDate() + '/' + date.getFullYear();
+
 
   const weatherApiKey = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
@@ -28,26 +32,37 @@ const User = () => {
     });
 
   const loadingPercentage = Math.round(loadingProgression * 100);
-  const [commitCount, setCommitCount] = useState("");
-  const [location, setLocation] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [weather, setWeather] = useState("");
-  const [today, setToday] = useState(new Date().toLocaleDateString());
-  
 
   const is3D = useStore((state:any) => state.is3D)
+  const commitCount = useStore((state:any) => state.commitCount)
+  const setCommitCount = useStore((state:any) => state.setCommitCount)
+
+  const location = useStore((state:any) => state.location)
+  const setLocation = useStore((state:any) => state.setLocation)
+
+  const temperature = useStore((state:any) => state.temperature)
+  const setTemperature = useStore((state:any) => state.setTemperature)
+
+  const weather = useStore((state:any) => state.weather)
+  const setWeather = useStore((state:any) => state.setWeather)
 
 
   useEffect(() => {
+    
+
     setTimeout(() => {
+      sendWeatherToUnity();  
       sendUserToUnity();
-    }, 2000);
+    },2000);
+        
 
-    sendWeatherToUnity();
+  }, [username]);
 
+  useEffect(() => {
+    sendWeatherToUnity();       
+      sendUserToUnity();
   }, [commitCount]);
 
-  
   function getLocation() {
     if (navigator.geolocation) {
       // GPS를 지원하면
@@ -86,6 +101,8 @@ const User = () => {
   }
 
   const sendWeatherToUnity = async () => {
+    sendMessage("GameManager", "GetDate", today);
+
     try {
       const gsLocation: any = await getLocation();
 
@@ -105,6 +122,8 @@ const User = () => {
         );
         setWeather(response.data.weather[0].main);
 
+        
+
         console.log("location : " + location);
         console.log("temperature : " + temperature);
         console.log("weather : " + weather);
@@ -113,11 +132,13 @@ const User = () => {
         sendMessage("GameManager", "GetLocation", location);
         sendMessage("GameManager", "GetTemperature", temperature);
         sendMessage("GameManager", "GetWeather", weather);
-        sendMessage("GameManager", "GetDate", today);
+      
       });
     } catch (err) {
       console.log(err);
     }
+
+
   };
 
   const sendUserToUnity = async () => {
@@ -128,8 +149,10 @@ const User = () => {
     console.log("username : " + username);
     console.log("commit count : " + commitCount);
     setCommitCount(words[0]);
+
     sendMessage("GameManager", "GetUsername", username);
-    sendMessage("GameManager", "GetCommit", words[0]);
+    sendMessage("GameManager", "GetCommit", commitCount);
+
   };
 
   return (
