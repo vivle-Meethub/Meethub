@@ -170,7 +170,6 @@ const User = () => {
 
             {/* ==================== unity-post section ==================== */}
             <section
-              style={{ marginTop: "20px", marginLeft: "30px" }}
               className="unity-post"
             >
               {isLoaded === false && (
@@ -182,6 +181,8 @@ const User = () => {
               <div className="season-test flex p-4">
                 <ViewToggle/>
 
+
+                <div style={is3D ? { display: "flex" } : { display: "none" }}>
                 <div className="flex items-center">
                   <span
                   className="cursor-pointer"
@@ -238,17 +239,21 @@ const User = () => {
                   
                   {/* <SeasonButton emoji="⛄"/> */}
                 </div>
+
+              </div>
+
+
                 </div>
 
 
               {/* ==================== unity section ==================== */}
-              <div style={is3D ? { display: "flex" } : { display: "none" }}>
+              <div style={is3D ? { display: "flex", justifyContent:'center' } : { display: "none" }}>
                 <Unity
                   style={{
                     display:"flex",
                     justifySelf:"center",
-                    width: "80%",
-                    height: "80%",
+                    width: "93%",
+                    height: "100%",
                     justifyContent: "center",
                     alignSelf: "center",
                   }}
@@ -256,9 +261,9 @@ const User = () => {
                 />
               </div>
 
-              <div style={is3D ? { display: "none" } : { display: "block" }}>
+              <div style={is3D ? { display: "none" } : { display: "flex", justifyContent:'center' }}>
                 {username && isLoaded && (
-                  <GitHubCalendar year={year} username={username} />
+                  <GitHubCalendar year={year} username={username} blockSize={17}/>
                 )}
               </div>
 
