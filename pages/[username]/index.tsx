@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import {useEffect } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
