@@ -1,13 +1,16 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import axios from 'axios';
-import Router from 'next/router';
+import { useRouter,Router } from "next/router";
 import { Line } from "rc-progress";
 import { v4 as uuid } from 'uuid';
 import { storage } from "../../firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Post = (props:any) =>{
+
+  const router = useRouter();
+  const { username }: any = router.query;
 
     const [items,setItems] = useState<any>([]);
     const [hasMore,sethasMore] = useState(true);
@@ -19,6 +22,9 @@ const Post = (props:any) =>{
 const [photoURL, setPhotoURL] = useState('');
 const [title, setTitle] = useState('');
 const [content, setContent] = useState('');
+const [file,setFile] = useState<File>();
+
+let fileInput=useRef<HTMLInputElement>(null);
 
 
 const [activeDialog, setActiveDialog] = useState(false);
@@ -31,8 +37,13 @@ const CloseDialog = () => {
 setActiveDialog(false);
 };
 
-const defaultButton =
-'rounded-xl py-2 px-4 shadow-md text-sm duration-300 active:bg-opacity-80 ease-in-out bg-[#1a5cff] md:text-sm text-white hover:shadow-md hover:shadow-blue-500/50 ';
+const resetState = async() => {
+  setActiveDialog(false);
+  setTitle('');
+  setContent('');
+  setPhotoURL('');
+  setFile(undefined);
+}
 
 
 const uploadFiles = (file:any) => {
@@ -57,16 +68,12 @@ const uploadFiles = (file:any) => {
 
 };
 
-// const onFileChange = (event:any) =>{
-//   console.log(event.target.value);
-//   const file = event.target[0].files[0];
-//   uploadFiles(file);
-// }
 
 const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
   event.preventDefault();
   const target = event.currentTarget;
   const file = (target.files as FileList)[0];
+  setFile(file);
   uploadFiles(file);
 }
 
@@ -76,27 +83,25 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
 
     const contentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setContent(e.target.value);
-
     };
 
 
-    
-  
     const submitData = async (e: React.SyntheticEvent) => {
       e.preventDefault();
 
-  
       try {
   
-        const formData = { title, content,photoURL };
+        const formData = { title, content,photoURL, username };
               
-        const response = await axios.post(`http://localhost:3000/api/wantop1`,{
+        const response = await axios.post(`http://localhost:3000/api/${username}`,{
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           data: formData,
         });
         console.log(response);
-        await Router.push(`${props.username}`);
+        window.location.replace(`/${username}`);
+        // await resetState();
+        // await Router.push(`/${props.username}`);
       } catch (error) {
         console.error(error);
       }
@@ -109,7 +114,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
 
           try {
             
-            const response = await axios.get(`http://localhost:3000/api/${'wantop1'}`,{
+            const response = await axios.get(`http://localhost:3000/api/${username}`,{
               method: 'get',
               timeout: 2000, 
             });
@@ -121,7 +126,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
         };
       
         getComments();
-      }, []);
+      }, [username]);
 
     // const fetchComments = async() => {
     //     const res = await fetch(
@@ -158,7 +163,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
           <span>작성한 포스트가 없습니다.</span>  <br/>
         </div>
 
-      <div className=" h-56 w-full rounded-lg flex cursor-context-menu">
+        <div className="h-56 w-full rounded-lg flex cursor-context-menu">
         <div className="m-auto text-gray-200 select-none">
 
           <div 
@@ -166,114 +171,12 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
             onClick={dialog}
             >
               게시물 작성하기
-            </div>
-
-          {/* dialog section */}
-            <div
-    className={
-      activeDialog
-        ? 'fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 '
-        : 'hidden'
-    }>
-    <div className="relative w-[90%] md:w-[35rem] lg:w-[45rem] h-[60%] md:h-[30rem] bg-white shadow-lg rounded-xl space-y-2 overflow-y-scroll">
-      <div className="sticky z-20 top-0 left-0 right-0 flex items-center justify-between bg-white shadow-sm py-4 px-6">
-        <h1 className="text-sm md:text-2xl font-semibold">Introduction</h1>
-        <img src='/Img/x-mark.svg' alt="close"  onClick={CloseDialog} className="cursor-pointer w-6 h-6" />
-      </div>
-      <div className="py-2 px-6">
-        <div>
-          <h2 className="text-base md:text-lg font-semibold opacity-80">
-            Your Heading
-          </h2>
-          <section className="post-form text-xs md:text-sm font-medium text-gray-500">
-          {/* body */}
-    <div className=" items-center px-5 py-12 lg:px-20">
-        <div className="flex flex-col w-full max-w-md p-10 mx-auto my-6 transition duration-500 ease-in-out transform bg-white rounded-lg md:mt-0">
-            <div className="mt-8">
-                <section className="flex flex-col w-full h-full p-1 overflow-auto">
-
-                </section>
-                <div className="mt-6">
-                    <form  className="space-y-6">
-                        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-                            <div>
-
-                                <div className="mt-1">
-                                    <input 
-                                    id="title" 
-                                    name="title" 
-                                    type="text" 
-                                    required 
-                                    placeholder="제목" 
-                                    className="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
-                                    transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 
-                                    focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
-                                    onChange ={titleHandler} 
-                                    />
-                                    
-                                </div>
-                            </div>
-
-                        </div>
-                        <div>
-                            <textarea 
-                            className="block w-full px-5 py-3 mt-2 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
-                            transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300
-                            apearance-none autoexpand" 
-                            id="content" 
-                            name="content"
-                            onChange ={contentHandler}
-                            >
-                            </textarea>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                        </div>
-
-                      {/* <div className="flex flex-col items-center justify-center py-12 text-base transition duration-500 ease-in-out transform bg-white border border-dashed rounded-lg text-blueGray-500 focus:border-blue-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
-                        <p className="flex flex-wrap justify-center mb-3 text-base leading-7 text-blueGray-500">
-                            <span>Drag and drop your</span>&nbsp;<span>files anywhere or</span></p>
-                        <button className="w-auto px-2 py-1 my-2 mr-2 transition duration-500 ease-in-out transform border rounded-md text-blueGray-500 hover:text-blueGray-600 text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-100">Upload a file</button>
-                    </div> */}
-
-              <div>
-                <input type="file" className="input" onChange={imageHandler}/>
-                <button
-                className="bg-[#b8e994] hover:bg-[#78e08f] text-white font-bold py-2 px-4 border-b-4
-                          border-[#78e08f] hover:border-[#b8e994] rounded"
-                >Upload</button>
-              </div>
-
-            <hr />
-
-            {/* <h3>Upload {progress} %</h3> */}
-            <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
-
-            {photoURL?.length > 0 && (
-              <div>
-                <img className="w-28 h-28" src={photoURL} alt='업로드 이미지'/>
-              </div>
-            )}
-
-        <div>
-            <button onClick={submitData} className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-[#b8e994] hover:bg-[#78e08f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">업로드</button>
-        </div>
-      </form>     
-    </div>
-</div>
-</div>
-</div>
-</section>
-        </div>
-      </div>
-    </div>
-  </div>
           </div>
-          </div>
+        </div>
+    </div>
       </div>     
       </article>
 
-      
         : <InfiniteScroll
           dataLength={items.length}
           next={fetchData}
@@ -290,8 +193,8 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
   {/* create post  */}
 <div className="post-box flex flex-wrap">
   
-<div className="post-item overflow-hidden shadow-lg rounded-lg h-80 w-60 md:w-80 cursor-pointer m-auto my-4 hover:-translate-y-2 duration-300">
-<a href="#" className="w-full block h-full">
+<div onClick={dialog}  className="post-create overflow-hidden shadow-lg rounded-lg h-80 w-60 md:w-80 cursor-pointer m-auto my-4 hover:-translate-y-2 duration-300">
+<div  className="w-full block h-full">
 
     <div className="bg-white dark:bg-gray-800 w-full p-4">
 
@@ -302,7 +205,8 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
         <p className="text-white dark:text-white text-xl font-medium mb-2">
           ㅤ   
         </p>
-        <img 
+        <img
+        
     alt="blog photo" 
     src='/Img/plus-circle.svg'
     onError={({ currentTarget }) => {
@@ -319,7 +223,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
         <div className="flex flex-wrap justify-starts items-center mt-4">
         </div>
     </div>
-</a>
+</div>
 </div>
 
 {items && items.map((item :any)=>{
@@ -335,11 +239,15 @@ return <div className="post-item overflow-hidden shadow-lg rounded-lg h-80 w-60 
     className="max-h-40 w-full object-cover"/>
     <div className="bg-white dark:bg-gray-800 w-full p-4">
 
-        <p className="text-gray-800 dark:text-white text-xl font-medium mb-2">
+        <p className="text-gray-800 dark:text-white text-base font-bold mb-2">
             {item.title}
         </p>
-        <p className="text-gray-400 dark:text-gray-300 font-light text-md whitespace-normal text-ellipsis overflow-hidden leading-normal h-[4.5em]">
+        <p className="text-[#495057] dark:text-gray-300 text-sm whitespace-normal text-ellipsis overflow-hidden leading-normal h-[4.5em]">
             {item.content}
+        </p>
+
+        <p className="text-[#868E96] text-xs">
+          {item.createdAt.toString().slice(0,10)}
         </p>
 
     </div>
@@ -351,6 +259,96 @@ return <div className="post-item overflow-hidden shadow-lg rounded-lg h-80 w-60 
 </InfiniteScroll>
 }    
   </section>
+          {/* dialog section */}
+            <div
+    className={
+      activeDialog
+        ? 'fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 '
+        : 'hidden'
+    }>
+    <div className="relative w-[90%] md:w-[35rem] lg:w-[45rem] h-[60%] md:h-[30rem] bg-white shadow-lg rounded-xl space-y-2 overflow-y-scroll">
+      <div className="sticky z-20 top-0 left-0 right-0 flex items-center justify-between bg-white shadow-sm py-4 px-6">
+        <h1 className="text-sm md:text-2xl font-semibold">Introduction</h1>
+        <img src='/Img/x-mark.svg' alt="close"  onClick={CloseDialog} className="cursor-pointer w-6 h-6" />
+      </div>
+      <div className="py-2 px-6">
+        <div>
+                            <div>
+                                <div className="mt-1">
+                                    <input 
+                                    id="title" 
+                                    name="title" 
+                                    type="text"
+                                    value={title}
+                                    required 
+                                    placeholder="제목" 
+                                    className="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
+                                    transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 
+                                    focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                    onChange ={titleHandler} 
+                                    />
+                                    
+                                </div>
+                            </div>
+
+                       
+
+          <div className="mt-6">
+                    <form  className="space-y-6">
+
+                        <div>
+                            <textarea 
+                            className="block h-48 w-full px-5 py-3 mt-2 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
+                            transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300
+                            apearance-none autoexpand" 
+                            value={content}
+                            id="content" 
+                            name="content"
+                            onChange ={contentHandler}
+                            >
+                            </textarea>
+                        </div>
+
+            
+              <div>
+                <input 
+                  type="file" 
+                  className="post-image"
+                  accept="image/*"
+                  onChange={imageHandler}
+                  ref={fileInput}
+                  
+                  />
+                {/* <button
+                className="bg-[#b8e994] hover:bg-[#78e08f] text-white font-bold py-2 px-4 border-b-4
+                          border-[#78e08f] hover:border-[#b8e994] rounded"
+                >
+                  Upload
+                </button> */}
+              </div>
+
+            <hr />
+
+            {/* <h3>Upload {progress} %</h3> */}
+            <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
+
+            {photoURL?.length > 0 && (
+              <div>
+                <img className="w-28 h-28" src={photoURL} alt='업로드 이미지'/>
+              </div>
+            )}
+
+        <div>
+            <button onClick={submitData} className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-[#b8e994] hover:bg-[#78e08f] focus:outline-none">업로드</button>
+        </div>
+      </form>     
+    </div>
+        <div className=" items-center px-5 py-12 lg:px-20"></div>
+
+        </div>
+  </div>
+          </div>
+          </div>
         </>
       )
 

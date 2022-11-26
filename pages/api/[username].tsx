@@ -16,6 +16,9 @@ export default async function handler(
           author: {
             name :String(username)
           }
+        },
+        orderBy: {
+          createdAt:"desc"
         }
           
       }).then(data=>res.json(data))
@@ -23,7 +26,7 @@ export default async function handler(
 
     if (req.method === "POST") {
 
-      const {title,content,photoURL} = req.body.data;
+      const {title,content,photoURL,username} = req.body.data;
 
       await client?.post.create({
          data : {
@@ -33,13 +36,15 @@ export default async function handler(
             img:photoURL,
             author : {
               connect : {
-                name:'wantop1'
+                name:username
               }
             }
 
 
          }
       })
+
+      res.end();
       
     };
 
