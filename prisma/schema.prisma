@@ -11,15 +11,16 @@ generator client {
 model Post {
   id        String  @id @default(cuid())
   title     String
-  content   String?
+  content   String? @db.Text
   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  String?
+  img       String?
 }
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
+  name          String?   @unique
   nickname      String?
   email         String?   @unique
   emailVerified DateTime?

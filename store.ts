@@ -7,6 +7,7 @@ const initialState = {
   location : '',
   temperature:'',
   weather: '',
+  feed:[],
 };
 
 const useStore = create(devtools((set) => ({
@@ -16,6 +17,7 @@ const useStore = create(devtools((set) => ({
   setLocation : (input:any) => set({location : input}),
   setTemperature : (input:any) => set({temperature : input}),
   setWeather : (input:any) => set({weather : input}),
+  setFeed : (input:any) => set({feed : input}),
 })))
   
 

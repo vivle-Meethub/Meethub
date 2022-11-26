@@ -1,5 +1,5 @@
 import axios from "axios";
-import {useEffect } from "react";
+import {useEffect,useState } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
@@ -7,10 +7,11 @@ import useStore from "../../store";
 import { useRouter } from "next/router";
 import Profile from "../../components/user/Profile";
 import Post from "../../components/user/Post";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
+import type { NextPage } from "next";
 
-const User = () => {
+const User:NextPage = ({post}:any) => {
   const router = useRouter();
   const { username }: any = router.query;
   
@@ -46,10 +47,13 @@ const User = () => {
   const weather = useStore((state:any) => state.weather)
   const setWeather = useStore((state:any) => state.setWeather)
 
+  const feed = useStore((state:any) => state.feed)
+
+
 
   useEffect(() => {
     
-
+    
     setTimeout(() => {
       sendWeatherToUnity();  
       sendUserToUnity();
@@ -159,6 +163,8 @@ const User = () => {
     <>
       <Layout seoTitle={username}>
 
+        
+
         <div className="App flex-col-reverse mt-16">
           <section className="user flex justify-center">
 
@@ -170,7 +176,7 @@ const User = () => {
 
             {/* ==================== unity-post section ==================== */}
             <section
-              className="unity-post"
+              className="unity-post w-full"
             >
               {isLoaded === false && (
                 <div className="loading-overlay">
@@ -273,7 +279,7 @@ const User = () => {
               ></div>
 
               {/* ==================== post section ==================== */}
-                  <Post/>
+                  <Post username={username}/>
 
             </section>
             </section>

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import { signIn,signOut, useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {

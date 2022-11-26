@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp,getApp } from "firebase/app";
 import {getStorage} from "firebase/storage";
 
 export const firebaseConfig = {
@@ -11,5 +11,10 @@ export const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-  export const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
+let app;
+
+if (!getApp.length) {
+    app =initializeApp(firebaseConfig);
+  }
+  
+  export const storage = getStorage(app);
