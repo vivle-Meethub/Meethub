@@ -1,8 +1,13 @@
 import type { NextPage } from "next";
-import Layout from "../components/Layout";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Layout from "../components/layout";
 import { signIn,signOut, useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+
   return (
     <Layout seoTitle="Main">
       <div
