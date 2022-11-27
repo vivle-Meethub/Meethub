@@ -1,12 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 declare global {
-  var client: PrismaClient | undefined;
+  // allow global `var` declarations
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined
 }
 
-const clinet = global.client || new PrismaClient(/* { log: ["query"] } */);
-//{ log: ["query"] } 를 활용하면 백엔드 로그에서 얼마나 많은 쿼리를 받고있는지 확인 할 수 있음
+export const client =
+  global.prisma ||
+  new PrismaClient({
+    log: ['query'],
+  })
 
-if (process.env.NODE_ENV === "development") global.client = clinet;
-
-export default clinet;
+if (process.env.NODE_ENV !== 'production') global.prisma = client
