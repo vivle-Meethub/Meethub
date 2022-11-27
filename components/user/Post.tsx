@@ -123,7 +123,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
 
     useEffect(() => {
 
-        const getComments = async() => {
+        const getPosts = async() => {
 
           try {
             
@@ -138,7 +138,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
           }
         };
       
-        getComments();
+        getPosts();
       }, [username]);
 
     // const fetchComments = async() => {

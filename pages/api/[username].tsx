@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../lib/server/client";
+import { client } from "../../lib/server/client";
 
 
 export default async function handler(
@@ -29,7 +29,7 @@ export default async function handler(
 
       const {title,content,photoURL,username} = req.body.data;
 
-      await client?.post.create({
+      const post = await client?.post.create({
          data : {
             title:title,
             content:content,
@@ -41,11 +41,22 @@ export default async function handler(
               }
             }
 
-
          }
       })
 
-      res.end();
+      res.json(post);
+      
+    };
+
+
+    if (req.method === "DELETE") {
+
+      console.log(req.body.postId);
+
+      const post = await client.post.delete({
+        where: { id: req.body.postId },
+      });
+      res.json(post);
       
     };
 

@@ -1,4 +1,31 @@
+import axios from 'axios';
+import { useState } from 'react';
 const PostDetail = (props:any) =>{
+
+  // const [postId, setPostId] = useState('');
+
+  // console.log(props.item.id);
+
+  const deletePost = async()=>{
+
+    const postId = props.item.id;
+
+    try {
+      
+      confirm("정말로 삭제 하시겠습니까?");
+
+      const response = await axios.delete(`http://localhost:3000/api/${props.username}`,{
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        data: {postId : postId}
+      });
+      console.log(response);
+      window.location.replace(`/${props.username}`);
+    } catch (error) {
+      console.error(error);
+    } 
+    
+  }
 
     return(
         <>
@@ -15,9 +42,19 @@ const PostDetail = (props:any) =>{
             <a href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">회고</a>
       </div>
 
-      <div className="flex">
-        <a className="text-sm" href={`/${props.username}`}>{props.username}</a>
-        <div className="text-sm text-gray-400 mx-3">{props.regDate}</div>
+      <div className="flex justify-between">
+
+        <div>
+          <a className="text-sm hover:text-emerald-400" href={`/${props.username}`}>{props.username}</a>
+          <span className="text-sm text-gray-400 mx-3">{props.regDate}</span>
+        </div>
+
+
+        <div>
+            <button className="mx-3 text-gray-400 hover:text-black">수정</button>
+            <button onClick={deletePost} className="text-gray-400 hover:text-black">삭제</button>
+        </div>
+
       </div>
      
     </div>
