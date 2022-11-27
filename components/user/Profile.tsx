@@ -22,7 +22,13 @@ const Profile = (props:any) =>{
       
 <div className="shadow-lg rounded-2xl w-80 p-4 bg-white dark:bg-gray-800 my-3">
     <div className="flex flex-row items-start gap-4">
-        <img src={`https://github.com/${props.username}.png`} className="w-28 h-28 rounded-lg"/>
+        <img src={`https://github.com/${props.username}.png`} 
+        className="w-28 h-28 rounded-lg"
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null;
+          currentTarget.src="Img/user.svg";
+        }}
+        />
         <div className="h-28 w-full flex flex-col justify-between">
             <div>
                 <p className="text-gray-800 dark:text-white text-xl font-medium">
@@ -36,19 +42,19 @@ const Profile = (props:any) =>{
                 <div className="flex items-center justify-between text-xs text-gray-400 dark:text-black">
                     <p className="flex flex-col">
                         posts
-                        <span className="text-black dark:text-indigo-500 font-bold">
+                        <span className="text-black dark:text-indigo-500 font-bold text-center">
                             34
                         </span>
                     </p>
                     <p className="flex flex-col">
                         followers
-                        <span className="text-black dark:text-indigo-500 font-bold">
+                        <span className="text-black dark:text-indigo-500 font-bold text-center">
                             455
                         </span>
                     </p>
                     <p className="flex flex-col">
                         following
-                        <span className="text-black dark:text-indigo-500 font-bold">
+                        <span className="text-black dark:text-indigo-500 font-bold text-center">
                             9.3
                         </span>
                     </p>
@@ -139,22 +145,26 @@ const Profile = (props:any) =>{
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                  안녕하세요. Meethub에서 개발자를 구하고 있습니다. <br/>
-                  관심 있으시면 쪽지 주세요!
-                  </p>
+                <textarea 
+                            className="block h-36 w-full px-5 py-3 mt-2 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
+                            transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300
+                            apearance-none autoexpand" 
+                            id="content" 
+                            name="content"
+                            >
+                            </textarea>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="text-red-500 border-gray-100 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
                     닫기
                   </button>
                   <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="bg-[#78e08f] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >

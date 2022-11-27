@@ -20,6 +20,7 @@ export default async function handler(
         orderBy: {
           createdAt:"desc"
         }
+
           
       }).then(data=>res.json(data))
     };
