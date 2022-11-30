@@ -8,6 +8,7 @@ import { storage } from "../../firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import PostDetail from "./PostDetail";
 import { signIn,signOut, useSession } from 'next-auth/react';
+import { TagsInput } from "react-tag-input-component";
 
 const Post = (props:any) =>{
 
@@ -31,6 +32,8 @@ const [activeDialog, setActiveDialog] = useState(false);
 const [activeDetailDialog, setActiveDetailDialog] = useState(false);
 let [tempItem, setTempItem] = useState({});
 let [tempRegDate, setTempRegDate] = useState('');
+
+const [tagTitles, setTagtitles] = useState([]);
 
 const dialog = () => {
  
@@ -106,7 +109,9 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
 
       try {
   
-        const formData = { title, content,photoURL, username };
+        const formData = { title, content,photoURL, username, tagTitles};
+
+        console.log(formData);
               
         const response = await axios.post(`/api/${username}`,{
           method: 'POST',
@@ -373,6 +378,17 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
                             </textarea>
                         </div>
 
+
+                        <div>
+                        <TagsInput
+                          value={tagTitles}
+                          onChange={setTagtitles}
+                          name="tag"
+                          placeHolder="tag"
+                        />
+                        
+                      </div>
+
             
               <div>
                 <input 
@@ -405,8 +421,10 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
         <div>
             <button onClick={submitData} className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-[#b8e994] hover:bg-[#78e08f] focus:outline-none">업로드</button>
         </div>
-      </form>     
+      </form>   
     </div>
+
+              
         <div className=" items-center px-5 py-12 lg:px-20"></div>
 
         </div>

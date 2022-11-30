@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {useSession } from 'next-auth/react';
 
 
@@ -7,10 +7,31 @@ import {useSession } from 'next-auth/react';
 const PostDetail = (props:any) =>{
 
   const { data: session, status } = useSession();
+  const postId = props.item.id;
+  const [tags,setTags] = useState([]);
+
+
+  useEffect(() => {
+
+    const getTags = async() => {
+
+      try {
+        
+        const response = await axios.get(`/api/post/tag/${postId}`,{
+          method: 'get',
+          timeout: 2000, 
+        });
+        console.log(response.data);
+        setTags(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    getTags();
+  }, [postId]);
 
   const deletePost = async()=>{
-
-    const postId = props.item.id;
 
     try {
       
@@ -38,10 +59,12 @@ const PostDetail = (props:any) =>{
           {props.item.title}
       </h1>
 
+
+
       <div className="flex mb-6 space-x-2">
-            <a href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">MTVS</a>
-            <a href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">MeetHub</a>
-            <a href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">회고</a>
+          {tags.map((tag:any)=>(
+              <a key={tag.id} href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">{tag.title}</a>
+          ))}
       </div>
 
       <div className="flex justify-between">
