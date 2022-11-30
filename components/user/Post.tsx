@@ -7,11 +7,13 @@ import { v4 as uuid } from 'uuid';
 import { storage } from "../../firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import PostDetail from "./PostDetail";
+import { signIn,signOut, useSession } from 'next-auth/react';
 
 const Post = (props:any) =>{
 
   const router = useRouter();
   const { username }: any = router.query;
+  const { data: session, status } = useSession();
 
     const [items,setItems] = useState<any>([]);
     const [hasMore,sethasMore] = useState(true);
@@ -106,7 +108,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
   
         const formData = { title, content,photoURL, username };
               
-        const response = await axios.post(`http://localhost:3000/api/${username}`,{
+        const response = await axios.post(`/api/${username}`,{
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           data: formData,
@@ -127,7 +129,7 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
 
           try {
             
-            const response = await axios.get(`http://localhost:3000/api/${username}`,{
+            const response = await axios.get(`/api/${username}`,{
               method: 'get',
               timeout: 2000, 
             });
@@ -173,18 +175,21 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
       <div>
 
         <div className="flex justify-center">
-          <span>작성한 포스트가 없습니다.</span>  <br/>
+          <span className="mt-24">작성한 포스트가 없습니다.</span>  <br/>
         </div>
 
         <div className="h-56 w-full rounded-lg flex cursor-context-menu">
         <div className="m-auto text-gray-200 select-none">
 
+          
+        {session?.user?.name === username &&
           <div 
             className="px-6 py-3 bg-[#78e08f] text-white font-bold text-sm rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200"
             onClick={dialog}
             >
               게시물 작성하기
           </div>
+        }
         </div>
     </div>
       </div>     
@@ -207,7 +212,8 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
   
 <div className="post-box flex flex-wrap">
 
- {/* create post  */}
+  {/* create post  */}
+  {session?.user?.name === username &&
 <div onClick={dialog}  className="post-create overflow-hidden shadow-lg rounded-lg h-80 w-60 md:w-80 cursor-pointer m-auto my-4 hover:-translate-y-2 duration-300">
 <div  className="w-full block h-full">
 
@@ -238,6 +244,8 @@ const imageHandler = (event:React.ChangeEvent<HTMLInputElement>) => {
     </div>
 </div>
 </div>
+}
+
 {/* create post end  */}
 
 {items && items.map((item :any, index:number)=>{

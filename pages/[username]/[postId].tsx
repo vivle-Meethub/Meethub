@@ -15,7 +15,7 @@ const User = ({postId}:any) => {
 
         //   try {
             
-        //     const response = await axios.get(`http://localhost:3000/api/post/${postId}`,{
+        //     const response = await axios.get(`/api/post/${postId}`,{
         //       method: 'get',
         //       timeout: 2000, 
         //     });

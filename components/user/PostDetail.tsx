@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
+import {useSession } from 'next-auth/react';
+
+
+
 const PostDetail = (props:any) =>{
 
-  // const [postId, setPostId] = useState('');
-
-  // console.log(props.item.id);
+  const { data: session, status } = useSession();
 
   const deletePost = async()=>{
 
@@ -14,7 +16,7 @@ const PostDetail = (props:any) =>{
       
       confirm("정말로 삭제 하시겠습니까?");
 
-      const response = await axios.delete(`http://localhost:3000/api/${props.username}`,{
+      const response = await axios.delete(`/api/${props.username}`,{
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         data: {postId : postId}
@@ -49,11 +51,13 @@ const PostDetail = (props:any) =>{
           <span className="text-sm text-gray-400 mx-3">{props.regDate}</span>
         </div>
 
+        {session?.user?.name === props.username &&
+                  <div>
+                  <button className="mx-3 text-gray-400 hover:text-black">수정</button>
+                  <button onClick={deletePost} className="text-gray-400 hover:text-black">삭제</button>
+              </div>
+        }
 
-        <div>
-            <button className="mx-3 text-gray-400 hover:text-black">수정</button>
-            <button onClick={deletePost} className="text-gray-400 hover:text-black">삭제</button>
-        </div>
 
       </div>
      

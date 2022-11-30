@@ -11,9 +11,13 @@ import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 import type { NextPage } from "next";
 
+
 const User:NextPage = ({post}:any) => {
   const router = useRouter();
   const { username }: any = router.query;
+
+
+  
   
   let date = new Date();
   let today = (date.getMonth()+1) +'/' + date.getDate() + '/' + date.getFullYear();
@@ -49,11 +53,30 @@ const User:NextPage = ({post}:any) => {
 
   const feed = useStore((state:any) => state.feed)
 
+  const [postCount,setPostCount] = useState();
+
 
 
   useEffect(() => {
-    
-    
+
+    const getPostCount = async() => {
+
+      try {
+        
+        const response = await axios.get(`/api/post/count/${username}`,{
+          method: 'get',
+          timeout: 2000, 
+        });
+        console.log(response.data);
+        setPostCount(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    getPostCount();
+
+
     setTimeout(() => {
       sendWeatherToUnity();  
       sendUserToUnity();
@@ -66,6 +89,8 @@ const User:NextPage = ({post}:any) => {
     sendWeatherToUnity();       
       sendUserToUnity();
   }, [commitCount]);
+
+
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -171,7 +196,7 @@ const User:NextPage = ({post}:any) => {
             
               {/* ==================== profile section ==================== */}
 
-              <Profile username={username}/>
+              <Profile username={username} postCount = {postCount}/>
 
 
             {/* ==================== unity-post section ==================== */}
