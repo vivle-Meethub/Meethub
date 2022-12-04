@@ -10,6 +10,7 @@ import Post from "../../components/user/Post";
 import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 import type { NextPage } from "next";
+import MobileProfile from "../../components/user/mobile-profile";
 
 
 const User:NextPage = ({post}:any) => {
@@ -301,7 +302,13 @@ const User:NextPage = ({post}:any) => {
               <div
                 style={{ display: "none" }}
                 className="react-activity-calendar__count"
-              ></div>
+              >
+
+              </div>
+
+              <MobileProfile/>
+
+
 
               {/* ==================== post section ==================== */}
                   <Post username={username}/>

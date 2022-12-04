@@ -8,6 +8,8 @@ const Home: NextPage = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
 
+  const { data: session, status } = useSession();
+
   return (
     <Layout seoTitle="Main">
       <div
@@ -32,7 +34,9 @@ const Home: NextPage = () => {
           <strong>Your browser does not support the video tag.</strong>
         </video>
 
-        <div className="absolute top-1 w-full h-screen font-sans bg-cover bg-landscape z-10">
+        {!session && 
+
+      <div className="absolute top-1 w-full h-screen font-sans bg-cover bg-landscape z-10">
           <div className="container flex items-center justify-center flex-1 h-full mx-auto">
             <div className="w-full max-w-lg">
               <div className="leading-loose">
@@ -98,6 +102,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+      }
       </div>
     </Layout>
   );

@@ -185,7 +185,7 @@ const Header = () => {
                                 <p>DwarfThema</p>
                               </td>
                               <td className="p-3">
-                                <p>마 니 내랑 사업 하나 하자</p>
+                                <p>새로운 사업을 기획하고 있습니다.</p>
                               </td>
                               <td className="p-3">
                                 <p>13 Jan 2022</p>

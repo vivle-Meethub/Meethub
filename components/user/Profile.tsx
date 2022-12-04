@@ -21,7 +21,7 @@ const Profile = (props:any) =>{
     return(
         <>
  <section className="profile flex-col items-center justify-center relative">
-    <div className="sticky top-16">
+    <div className="sticky top-16 max-sm:hidden">
       
 <div className="shadow-lg rounded-2xl w-80 p-4 bg-white dark:bg-gray-800 my-3 mt-auto pb-[100%] pt-14">
     <div className="flex flex-row items-start gap-4">
