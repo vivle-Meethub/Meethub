@@ -1,5 +1,5 @@
 import axios from "axios";
-import {useEffect,useState } from "react";
+import { useEffect } from "react";
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import GitHubCalendar from "react-github-calendar";
@@ -10,24 +10,19 @@ import Post from "../../components/user/Post";
 import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 import type { NextPage } from "next";
-import MobileProfile from "../../components/user/mobile-profile";
+import MobileProfile from "../../components/user/MobileProfile";
 
 
-const User:NextPage = ({post}:any) => {
+const User:NextPage = () => {
+
   const router = useRouter();
   const { username }: any = router.query;
 
-
-  
-  
   let date = new Date();
   let today = (date.getMonth()+1) +'/' + date.getDate() + '/' + date.getFullYear();
 
-
   const weatherApiKey = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
-  //DaeyeonKim97 DwarfThema wantop1 pjhhs021 mungjin4966 hyunjungjeon 5onchangwoo
-
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext({
@@ -52,10 +47,8 @@ const User:NextPage = ({post}:any) => {
   const weather = useStore((state:any) => state.weather)
   const setWeather = useStore((state:any) => state.setWeather)
 
-  const feed = useStore((state:any) => state.feed)
-
-  const [postCount,setPostCount] = useState();
-
+  const postCount = useStore((state:any) => state.postCount)
+  const setPostCount = useStore((state:any) => state.setPostCount)
 
 
   useEffect(() => {
@@ -63,7 +56,6 @@ const User:NextPage = ({post}:any) => {
     const getPostCount = async() => {
 
       try {
-        
         const response = await axios.get(`/api/post/count/${username}`,{
           method: 'get',
           timeout: 2000, 
@@ -277,18 +269,10 @@ const User:NextPage = ({post}:any) => {
 
                 </div>
 
-
               {/* ==================== unity section ==================== */}
               <div style={is3D ? { display: "flex", justifyContent:'center' } : { display: "none" }}>
                 <Unity
-                  style={{
-                    display:"flex",
-                    justifySelf:"center",
-                    width: "93%",
-                    height: "100%",
-                    justifyContent: "center",
-                    alignSelf: "center",
-                  }}
+                  className="flex justify-center w-[93%] h-full items-center"
                   unityProvider={unityProvider}
                 />
               </div>
@@ -299,16 +283,9 @@ const User:NextPage = ({post}:any) => {
                 )}
               </div>
 
-              <div
-                style={{ display: "none" }}
-                className="react-activity-calendar__count"
-              >
+              <div className="react-activity-calendar__count hidden"></div>
 
-              </div>
-
-              <MobileProfile/>
-
-
+              <MobileProfile username={username}/>
 
               {/* ==================== post section ==================== */}
                   <Post username={username}/>

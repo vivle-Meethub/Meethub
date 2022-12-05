@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { useState,useEffect } from 'react';
+import { useEffect } from 'react';
 import {useSession } from 'next-auth/react';
-
-
+import useStore from '../../store';
 
 const PostDetail = (props:any) =>{
 
-  const { data: session, status } = useSession();
-  const postId = props.item.id;
-  const [tags,setTags] = useState([]);
+  const { data: session } = useSession();
+  const tags = useStore((state:any) => state.tags)
+  const setTags = useStore((state:any) => state.setTags)
+  const post = useStore((state:any) => state.post)
 
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const PostDetail = (props:any) =>{
 
       try {
         
-        const response = await axios.get(`/api/post/tag/${postId}`,{
+        const response = await axios.get(`/api/post/tag/${post.id}`,{
           method: 'get',
           timeout: 2000, 
         });
@@ -29,25 +29,24 @@ const PostDetail = (props:any) =>{
     };
   
     getTags();
-  }, [postId]);
+  }, [post.id]);
 
   const deletePost = async()=>{
+    
+    if(!confirm("정말로 삭제 하시겠습니까?"))
+      return;
 
     try {
-      
-      confirm("정말로 삭제 하시겠습니까?");
-
-      const response = await axios.delete(`/api/${props.username}`,{
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        data: {postId : postId}
-      });
-      console.log(response);
-      window.location.replace(`/${props.username}`);
-    } catch (error) {
-      console.error(error);
-    } 
-    
+        const response = await axios.delete(`/api/${props.username}`,{
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          data: {postId : post.id}
+        });
+        console.log(response);
+        window.location.replace(`/${props.username}`);
+      } catch (error) {
+        console.error(error);
+      } 
   }
 
     return(
@@ -56,7 +55,7 @@ const PostDetail = (props:any) =>{
   <div className="w-full mx-auto mb-10 text-left md:w-3/4">
     <div className="pb-6 mb-6 border-b border-gray-200">
       <h1 className="mb-3 text-3xl font-bold text-gray-900 md:leading-tight md:text-4xl" itemProp="headline" title="Rise of Tailwind - A Utility First CSS Framework">
-          {props.item.title}
+          {post.title}
       </h1>
 
 
@@ -71,7 +70,7 @@ const PostDetail = (props:any) =>{
 
         <div>
           <a className="text-sm hover:text-emerald-400" href={`/${props.username}`}>{props.username}</a>
-          <span className="text-sm text-gray-400 mx-3">{props.regDate}</span>
+          <span className="text-sm text-gray-400 mx-3">{post.createdAt && post.createdAt.toString().slice(0,10)}</span>
         </div>
 
         {session?.user?.name === props.username &&
@@ -86,11 +85,11 @@ const PostDetail = (props:any) =>{
      
     </div>
         
-    <img src={props.item.img}/>
+    <img src={post.img}/>
   </div>
 
   <div className="w-full mx-auto prose md:w-3/4 lg:w-1/2">
-    <p>{props.item.content}</p>
+    <p>{post.content}</p>
 
   </div>
 </article>

@@ -2,22 +2,42 @@ import create from 'zustand'
 import { devtools } from 'zustand/middleware';
 
 const initialState = {
-  is3D: true,
+  username : '',
+  is3D : true,
   commitCount : '',
   location : '',
-  temperature:'',
-  weather: '',
-  feed:[],
+  temperature :'',
+  weather : '',
+  postCount : 0,
+  showMessageModal : false,
+  showMessageBoxModal : false,
+  showCreatePostModal : false,
+  showPostDetailModal : false,
+  posts : [],
+  post : {},
+  tags: [],
 };
 
 const useStore = create(devtools((set) => ({
   ...initialState,
+  setUsername : (input:any) => set({username : input}),
   changeView: () => set((state:any) => ({ is3D: !state.is3D })),
   setCommitCount : (input:any) => set({commitCount : input}),
   setLocation : (input:any) => set({location : input}),
   setTemperature : (input:any) => set({temperature : input}),
   setWeather : (input:any) => set({weather : input}),
-  setFeed : (input:any) => set({feed : input}),
+  setPostCount : (input:any) => set({postCount : input}),
+  openMessageModal : () => set(() => ({ showMessageModal: true })),
+  closeMessageModal : () => set(() => ({ showMessageModal: false })),
+  openMessageBoxModal : () => set(() => ({ showMessageBoxModal: true })),
+  closeMessageBoxModal : () => set(() => ({ showMessageBoxModal: false })),
+  openCreatePostModal : () => set(() => ({ showCreatePostModal: true })),
+  closeCreatePostModal : () => set(() => ({ showCreatePostModal: false })),
+  openPostDetailModal : () => set(() => ({ showPostDetailModal: true })),
+  closePostDetailModal : () => set(() => ({ showPostDetailModal: false })),
+  setPosts : (input:any) => set({posts : input}),
+  setPost : (input:any) => set({post : input}),
+  setTags : (input:any) => set({tags : input}),
 })))
   
 

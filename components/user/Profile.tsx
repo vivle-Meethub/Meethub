@@ -1,16 +1,14 @@
-import axios from 'axios';
-import { useState,useEffect } from "react";
-import UserStatus from './UserStatus';
 import { SkillTooltip } from './SkillTooltip';
-import {useSession } from 'next-auth/react';
-import { useRouter } from "next/router";
+import { useSession } from 'next-auth/react';
+import StateDropdown from "./StateDropdown";
+import MessageModal from "../modal/MessageModal";
+import useStore from "../../store";
 
 const Profile = (props:any) =>{
 
-    const [showModal, setShowModal] = useState(false);
-    const [dropdown, setDropdown] = useState(false);
-    const [myStatus, setMyStatus] = useState('online');
-    const { data: session, status } = useSession();
+  const openMessageModal = useStore((state:any) => state.openMessageModal)
+  
+    const { data: session } = useSession();
    
     let color = 'white'
     let bgColor;
@@ -23,7 +21,7 @@ const Profile = (props:any) =>{
  <section className="profile flex-col items-center justify-center relative">
     <div className="sticky top-16 max-sm:hidden">
       
-<div className="shadow-lg rounded-2xl w-80 p-4 bg-white dark:bg-gray-800 my-3 mt-auto pb-[100%] pt-14">
+<div className="shadow-lg rounded-2xl w-80 p-4 bgs-white dark:bg-gray-800 my-3 mt-auto pb-[100%] pt-14">
     <div className="flex flex-row items-start gap-4">
         <img src={`https://github.com/${props.username}.png`} 
         className="w-28 h-28 rounded-lg"
@@ -71,7 +69,7 @@ const Profile = (props:any) =>{
       <button 
           type="button" 
           className="w-1/2 px-4 py-2 text-base border rounded-lg text-grey-500 bg-white hover:bg-gray-200 "
-          onClick={() => setShowModal(true)}
+          onClick={openMessageModal}
       >
           message
       </button>
@@ -88,108 +86,10 @@ const Profile = (props:any) =>{
             <SkillTooltip skill={'Python'} description={'파이썬은 가독성이 높고 쉬운 문법 덕택에 다른 프로그래밍 언어보다 빠른 습득이 가능하다는 특징이 있습니다. 그 덕에 프로그래밍을 전공하지 않은 비전공자 중심으로 인기를 얻어 데이터 분석과 모델링을 다루는 통계학부터 딥러닝과 인공지능을 활용하는 의학에까지 다양한 분야에 두루 활용되고 있습니다.'}/>
         </div>
 
-        {/* dropdown section */}
-        <div>
-      <div onClick={() => setDropdown(!dropdown)} className="p-3 bg-white dark:bg-darkSecondary shadow-lg rounded-xl flex items-center justify-center w-44 cursor-pointer">
-        <UserStatus status = {myStatus}/>
-      </div>
-      <ul
-        className={
-          dropdown
-            ? 'flex my-1 items-center space-x-2 p-2 rounded-xl bg-white dark:bg-darkSecondary shadow-2xl w-fit'
-            : 'invisible inline-flex my-1 items-center space-x-2 p-2 rounded-xl bg-white dark:bg-darkSecondary shadow-2xl w-fit'
-        }>
-          <li onClick={()=>{
-            setMyStatus('online')
-            setDropdown(false)
-          }}>
-            <UserStatus status='online'/>
-          </li>
-
-          <li onClick={()=>{
-            setMyStatus('idle')
-            setDropdown(false)
-          }}>
-            <UserStatus status='idle'/>
-          </li>
-
-          <li onClick={()=>{
-            setMyStatus('doNotDisturb')
-            setDropdown(false)
-          }}>
-            <UserStatus status='doNotDisturb'/>
-          </li>
-        
-      </ul>
-    </div>
-
-
-    {/* modal section */}
-    <section>
-      {showModal ? (
-        <>
-          <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    쪽지 보내기
-                  </h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
-                </div>
-                {/*body*/}
-                <div className="relative p-6 flex-auto">
-                <textarea 
-                            className="block h-36 w-full px-5 py-3 mt-2 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out 
-                            transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300
-                            apearance-none autoexpand" 
-                            id="content" 
-                            name="content"
-                            >
-                            </textarea>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-500 border-gray-100 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    닫기
-                  </button>
-                  <button
-                    className="bg-[#78e08f] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    전송
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      ) : null}
-
-    </section>
-
-
+        <StateDropdown/>
+        <MessageModal/>
 
 </div>
-
-
     </div>
     </section>
         </>

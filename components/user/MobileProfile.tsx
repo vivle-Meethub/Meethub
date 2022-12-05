@@ -1,4 +1,8 @@
+import useStore from "../../store"
+
 const MobileProfile = (props:any) =>{
+
+    const postCount = useStore((state:any) => state.postCount)
 
     return(
         <section className="mobile-profile hidden justify-center mt-20 max-sm:flex">
@@ -6,10 +10,18 @@ const MobileProfile = (props:any) =>{
 <img alt="profil" src="/Img/profile-bg.png" className="w-full mb-4 rounded-t-lg h-28"/>
 <div className="flex flex-col items-center justify-center p-4 -mt-16">
   <a href="#" className="relative block">
-      <img alt="mobile-profile" src="https://github.com/wantop1.png" className="mx-auto object-cover rounded-full h-16 w-16  border-2 border-white dark:border-gray-800"/>
+      <img 
+        alt="mobile-profile"  
+        src={`https://github.com/${props.username}.png`} 
+        className="mx-auto object-cover rounded-full h-16 w-16  border-2 border-white dark:border-gray-800"
+        onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src="/Img/user.svg";
+          }}
+        />
   </a>
   <p className="mt-2 text-xl font-medium text-gray-800 dark:text-white">
-      wantop1
+      {props.username} 
   </p>
   <p className="mb-4 text-xs text-gray-400">
     FullStack dev
@@ -27,9 +39,8 @@ const MobileProfile = (props:any) =>{
       <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-200">
           <p className="flex flex-col">
           posts
-
               <span className="text-center first-line:font-bold text-black dark:text-white">
-                  7
+                  {postCount}
               </span>
           </p>
           <p className="flex flex-col">
