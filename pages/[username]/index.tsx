@@ -272,7 +272,7 @@ const User:NextPage = () => {
               {/* ==================== unity section ==================== */}
               <div style={is3D ? { display: "flex", justifyContent:'center' } : { display: "none" }}>
                 <Unity
-                  className="flex justify-center w-[93%] h-full items-center"
+                  className="flex justify-center w-[97%] h-full items-center"
                   unityProvider={unityProvider}
                 />
               </div>

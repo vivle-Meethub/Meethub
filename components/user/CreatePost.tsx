@@ -2,12 +2,12 @@ import useStore from "../../store";
 
 const CreatePost = (props:any) =>{
 
-    const setShowCreatePostModal = useStore((state:any) => state.setShowCreatePostModal)
+    const openCreatePostModal = useStore((state:any) => state.openCreatePostModal)
 
     return(
         
       <>
-        <div onClick={()=>setShowCreatePostModal(true)}  className="post-create overflow-hidden shadow-lg rounded-lg h-80 w-60 md:w-80 cursor-pointer m-auto my-4 hover:-translate-y-2 duration-300">
+        <div onClick={openCreatePostModal}  className="post-create overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer m-auto my-4 hover:-translate-y-2 duration-300">
         <div  className="w-full block h-full">
 
         <div className="bg-white dark:bg-gray-800 w-full p-4">

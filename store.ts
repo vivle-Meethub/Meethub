@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware';
 const initialState = {
   username : '',
   is3D : true,
-  commitCount : '',
+  commitCount : '0',
   location : '',
   temperature :'',
   weather : '',

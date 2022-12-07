@@ -5,8 +5,8 @@ const MobileProfile = (props:any) =>{
     const postCount = useStore((state:any) => state.postCount)
 
     return(
-        <section className="mobile-profile hidden justify-center mt-20 max-sm:flex">
-        <div className="bg-white shadow-lg rounded-2xl w-80 dark:bg-gray-800">
+        <section className="mobile-profile hidden justify-center mt-16 max-sm:flex px-4">
+        <div className="bg-white shadow-lg rounded-2xl w-full  dark:bg-gray-800">
 <img alt="profil" src="/Img/profile-bg.png" className="w-full mb-4 rounded-t-lg h-28"/>
 <div className="flex flex-col items-center justify-center p-4 -mt-16">
   <a href="#" className="relative block">

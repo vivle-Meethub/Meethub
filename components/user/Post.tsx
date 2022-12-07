@@ -119,24 +119,26 @@ const setPostAndOpenModal = (index:number) => {
         >
         
 <div>
-  
-  
-<div className="post-box flex flex-wrap">
 
 
-  {session?.user?.name === username &&
-    <CreatePost username={username}/>
-  }
-    
+<div className="flex flex-wrap post-box">
+    {session?.user?.name === username &&
+      <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4">
+        <CreatePost username={username}/>
+      </div>
+    }
+
 
 {posts && posts.map((post :any, index:number)=>{
-  return <div 
-  className="post-item overflow-hidden shadow-lg rounded-lg h-80 w-60 md:w-80 cursor-pointer
+  return <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4">
+
+    <div 
+  className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
   m-auto my-4 hover:-translate-y-2 duration-300" 
   key={post.id}
   onClick = {()=>setPostAndOpenModal(index)}
   >
-<div  className="w-full block h-full">
+<div className="w-full block h-full">
     <img 
     alt="blog photo" 
     src={post.img}
@@ -144,7 +146,7 @@ const setPostAndOpenModal = (index:number) => {
       currentTarget.onerror = null;
       currentTarget.src="Img/basic-img.png";
     }}
-    className="max-h-40 w-full object-cover"/>
+    className="h-40 w-full object-cover"/>
     <div className="bg-white dark:bg-gray-800 w-full p-4">
 
         <p className="text-gray-800 dark:text-white text-base font-bold mb-2 truncate ...">
@@ -158,14 +160,38 @@ const setPostAndOpenModal = (index:number) => {
           {post.createdAt.toString().slice(0,10)}
         </p>
 
-        
 
     </div>
       
 </div>
 </div>
+
+  </div>
+  
   })}
+
+
+    
+  {/* <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-300"></div>
+  </div>
+  <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-200"></div>
+  </div>
+  <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-300"></div>
+  </div>
+  <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-200"></div>
+  </div>
+  <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-300"></div>
+  </div>
+  <div className="w-1/3 mb-4 px-2">
+    <div className="h-12 bg-indigo-300"></div>
+  </div> */}
 </div>
+
 </div>
 
 

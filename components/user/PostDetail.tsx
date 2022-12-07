@@ -54,7 +54,7 @@ const PostDetail = (props:any) =>{
 <article className="px-2 py-12 mx-auto max-w-7xl" itemID="#" itemScope itemType="http://schema.org/BlogPosting">
   <div className="w-full mx-auto mb-10 text-left md:w-3/4">
     <div className="pb-6 mb-6 border-b border-gray-200">
-      <h1 className="mb-3 text-3xl font-bold text-gray-900 md:leading-tight md:text-4xl" itemProp="headline" title="Rise of Tailwind - A Utility First CSS Framework">
+      <h1 className="mb-3 font-bold text-gray-900 md:leading-tight md:text-2xl" itemProp="headline" title="Rise of Tailwind - A Utility First CSS Framework">
           {post.title}
       </h1>
 
