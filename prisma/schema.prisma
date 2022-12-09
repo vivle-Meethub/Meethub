@@ -17,6 +17,14 @@ model Post {
   authorId  String?
   img       String?
   createdAt  DateTime    @default(now())
+  tags      Tag[]
+}
+
+model Tag {
+    id      String  @id @default(cuid())
+    post Post? @relation(fields: [postId], references: [id])
+    postId String
+    title     String
 }
 
 model User {
