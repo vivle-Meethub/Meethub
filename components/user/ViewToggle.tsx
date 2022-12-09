@@ -1,7 +1,6 @@
 import useStore from "../../store";
 
-const ViewToggle = (props:any) =>{
-
+const ViewToggle = () =>{
 
     const is3D = useStore((state:any) => state.is3D)
     const changeView = useStore((state:any) => state.changeView)
