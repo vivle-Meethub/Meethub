@@ -22,27 +22,27 @@ const Header = () => {
 
 
   let messageBox = (
-    <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
+    <div className="relative p-1 flex items-center justify-end  ml-5 sm:mr-0 sm:right-auto">
     <a href="#" className="block relative"
       onClick={openMessageBoxModal}
     >
-      <img alt="message" src="/img/envelope.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
+      <img alt="message" src="/img/envelope.svg" className="mx-auto object-contain rounded-full h-6 w-6"/>
     </a>
   </div>
 );
 
 let logout = (
-  <div className="relative p-1 flex items-center justify-end  ml-5 mr-4 sm:mr-0 sm:right-auto">
+  <div className="relative p-1 flex items-center justify-end mr-4 sm:mr-0 sm:right-auto">
     {session?
       (
       <button onClick={()=>signOut()} className="block relative">
-        <img alt="logout" src="/img/poweron.svg" className="mx-auto object-cover rounded-full h-6 w-6 hover"/>
+        <img alt="logout" src="/img/poweron.svg" className="mx-auto object-contain rounded-full h-6 w-6 hover"/>
       </button>
       ) :
 
       (
         <a href="/" className="block relative">
-        <img alt="logout" src="/img/power.svg" className="mx-auto object-cover rounded-full h-6 w-6 hover"/>
+        <img alt="logout" src="/img/power.svg" className="mx-auto ml-5 object-contain rounded-full h-6 w-6 hover"/>
       </a>
       )
     }
@@ -50,7 +50,7 @@ let logout = (
 </div>
 );
 
-let name = (<div className="text-[1vw]">{session?.user?.name}</div>)
+let name = (<div className="whitespace-nowrap text-xs ml-5"><a href={`/${session?.user?.name}`}>{session?.user?.name}</a></div>)
 
   return (
     <>
@@ -63,7 +63,10 @@ let name = (<div className="text-[1vw]">{session?.user?.name}</div>)
           <div 
           className="meethub-logo-box mx-5">
                   <a href="/" className="block relative">
-                    <img alt="meethub-logo" src="https://avatars.githubusercontent.com/u/65522153?v=4" className="mx-auto object-cover rounded-full h-16 w-16 " />
+                    <img 
+                     alt="meethub-logo" 
+                     src="https://avatars.githubusercontent.com/u/65522153?v=4" 
+                     className="mx-auto object-contain rounded-full h-16 w-16 " />
                   </a>
               </div>
 

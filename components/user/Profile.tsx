@@ -27,7 +27,7 @@ const Profile = (props:any) =>{
         className="w-28 h-28 rounded-lg"
         onError={({ currentTarget }) => {
           currentTarget.onerror = null;
-          currentTarget.src="Img/user.svg";
+          currentTarget.src="Img/user.png";
         }}
         />
         <div className="h-28 w-full flex flex-col justify-between">
