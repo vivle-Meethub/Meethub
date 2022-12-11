@@ -60,9 +60,11 @@ const PostDetail = (props:any) =>{
 
 
 
-      <div className="flex mb-6 space-x-2">
+      <div className="flex-wrap mb-6">
           {tags.map((tag:any)=>(
+            <div className='inline-block'>
               <a key={tag.id} href="#" className="text-[#78e08f] bg-gray-50 hover:bg-gray-100 text-xs px-3 rounded-full">{tag.title}</a>
+            </div>
           ))}
       </div>
 
