@@ -12,11 +12,11 @@ const MobileProfile = (props:any) =>{
   <a href="#" className="relative block">
       <img 
         alt="mobile-profile"  
-        src={`https://github.com/${props.username}.png`} 
-        className="mx-auto object-cover rounded-full h-16 w-16  border-2 border-white dark:border-gray-800"
+        src={`https://github.com/${props.username}.png`}
+        className="mx-auto object-cover rounded-full h-16 w-16 dark:border-gray-800"
         onError={({ currentTarget }) => {
             currentTarget.onerror = null;
-            currentTarget.src="/Img/user.svg";
+            currentTarget.src="/Img/user.png";
           }}
         />
   </a>
