@@ -26,7 +26,7 @@ const Header = () => {
     <a href="#" className="block relative"
       onClick={openMessageBoxModal}
     >
-      <img alt="message" src="/img/envelope.svg" className="mx-auto object-contain rounded-full h-6 w-6"/>
+      <img alt="message" src="/Img/envelope.svg" className="mx-auto object-contain rounded-full h-6 w-6"/>
     </a>
   </div>
 );
