@@ -17,7 +17,7 @@ const [photoURL, setPhotoURL] = useState('');
 const [title, setTitle] = useState('');
 const [content, setContent] = useState('');
 const [file,setFile] = useState<File>();
-const [tagTitles, setTagtitles] = useState([]);
+const [tagTitles, setTagtitles] = useState<string[]>([]);
 const [progress,setProgress] = useState(0);
 
 let fileInput=useRef<HTMLInputElement>(null);

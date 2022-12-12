@@ -64,7 +64,7 @@ return(
                                 <span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
                                   <a href="#" className="block relative"
                                   >
-                                    <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
+                                    <img alt="profil" src="/Img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
                                   </a>
                                 </span>
                               </td>
