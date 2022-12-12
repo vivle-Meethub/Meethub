@@ -1,9 +1,9 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState,useEffect,useRef } from "react";
 import axios from 'axios';
-import { useRouter,Router } from "next/router";
+import { useRouter } from "next/router";
 
-import { signIn,signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 import CreatePost from "./CreatePost";
 import CreatePostModal from "../modal/CreatePostModal";
@@ -40,7 +40,7 @@ const setPostAndOpenModal = (index:number) => {
 
           try {
             
-            const response = await axios.get(`/api/${username}`,{
+            const response = await axios.get(`/api/${props.username}`,{
               method: 'get',
               timeout: 2000, 
             });

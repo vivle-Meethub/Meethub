@@ -1,18 +1,20 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
 import useStore from "../store";
-import { signIn,signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import MessageBoxModal from "./modal/MessageBoxModal";
 
 const Header = () => {
 
 
   const router = useRouter();
-  const [searchUsername, setSearchUsername] = useState("");
   const { data: session } = useSession();
 
   const openMessageBoxModal = useStore((state:any) => state.openMessageBoxModal)
 
+
+  const searchUsername = useStore((state:any) => state.searchUsername)
+  const setSearchUsername = useStore((state:any) => state.setSearchUsername)
+  
   const onCheckEnter = (e: any) => {
     if (e.key === 'Enter') {
       e.preventDefault();

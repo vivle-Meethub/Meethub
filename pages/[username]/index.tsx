@@ -18,10 +18,6 @@ const User:NextPage = () => {
   const router = useRouter();
   const { username }: any = router.query;
 
-  let date = new Date();
-  let today = (date.getMonth()+1) +'/' + date.getDate() + '/' + date.getFullYear();
-
-  const weatherApiKey = "1df5e2040e1f1297719ed96af9dbaeb6";
   const year = "last";
 
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
@@ -38,17 +34,12 @@ const User:NextPage = () => {
   const commitCount = useStore((state:any) => state.commitCount)
   const setCommitCount = useStore((state:any) => state.setCommitCount)
 
-  const location = useStore((state:any) => state.location)
-  const setLocation = useStore((state:any) => state.setLocation)
-
-  const temperature = useStore((state:any) => state.temperature)
-  const setTemperature = useStore((state:any) => state.setTemperature)
-
-  const weather = useStore((state:any) => state.weather)
-  const setWeather = useStore((state:any) => state.setWeather)
-
   const postCount = useStore((state:any) => state.postCount)
   const setPostCount = useStore((state:any) => state.setPostCount)
+
+  
+  const totalCount = useStore((state:any) => state.totalCount)
+  const setTotalCount = useStore((state:any) => state.setTotalCount)
 
 
   useEffect(() => {
@@ -71,97 +62,33 @@ const User:NextPage = () => {
 
 
     setTimeout(() => {
-      sendWeatherToUnity();  
+      sendMessage("GameManager", "GetDate", "12/16/2022");
       sendUserToUnity();
     },2000);
         
 
   }, [username]);
 
-  useEffect(() => {
-    sendWeatherToUnity();       
+
+  useEffect(() => {   
+    sendMessage("GameManager", "GetDate", "12/16/2022");
+    sendUserToUnity();
+
+}, [postCount]);
+
+  useEffect(() => {   
+      sendMessage("GameManager", "GetDate", "12/16/2022");
       sendUserToUnity();
+
   }, [commitCount]);
 
 
+  useEffect(() => {   
+    sendMessage("GameManager", "GetDate", "12/16/2022");
+    sendUserToUnity();
 
-  function getLocation() {
-    if (navigator.geolocation) {
-      // GPS를 지원하면
-      return new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          function (error) {
-            console.error(error);
-            resolve({
-              latitude: "37.3595704",
-              longitude: "127.105399",
-            });
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }).then((coords) => {
-        console.log(`coords:${JSON.stringify(coords)}`);
-        return coords;
-      });
-    }
+}, [totalCount]);
 
-    alert("GPS를 지원하지 않습니다");
-    return {
-      latitude: "37.3595704",
-      longitude: "127.105399",
-    };
-  }
-
-  const sendWeatherToUnity = async () => {
-    sendMessage("GameManager", "GetDate", today);
-
-    try {
-      const gsLocation: any = await getLocation();
-
-      console.log("gsLocation", gsLocation);
-
-      await axios({
-        method: "GET",
-        url: `https://api.openweathermap.org/data/2.5/weather?lat=${gsLocation?.latitude}&lon=${gsLocation?.longitude}&appid=${weatherApiKey}`,
-      }).then((response) => {
-        console.log(response);
-
-        setLocation(response.data.name);
-        setTemperature(
-          (
-            Math.round((response.data.main.temp - 273.15) * 10) / 10
-          ).toString() + "°C"
-        );
-        setWeather(response.data.weather[0].main);
-
-        
-
-        console.log("location : " + location);
-        console.log("temperature : " + temperature);
-        console.log("weather : " + weather);
-        console.log("date : " + today);
-
-        sendMessage("GameManager", "GetLocation", location);
-        sendMessage("GameManager", "GetTemperature", temperature);
-        sendMessage("GameManager", "GetWeather", weather);
-      
-      });
-    } catch (err) {
-      console.log(err);
-    }
-
-
-  };
 
   const sendUserToUnity = async () => {
     const commitCountDiv = document.querySelector(
@@ -170,10 +97,13 @@ const User:NextPage = () => {
     const words: any = commitCountDiv?.textContent?.split(" ");
     console.log("username : " + username);
     console.log("commit count : " + commitCount);
+    console.log("post count : " + postCount);
+    console.log(String(Number(commitCount) + postCount))
     setCommitCount(words[0]);
+    setTotalCount(String(Number(commitCount) + postCount))
 
     sendMessage("GameManager", "GetUsername", username);
-    sendMessage("GameManager", "GetCommit", commitCount);
+    sendMessage("GameManager", "GetCommit", totalCount);
 
   };
 
