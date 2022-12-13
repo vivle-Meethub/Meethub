@@ -48,8 +48,8 @@ return(
                                 <p>meethub에 오신 것을 환영합니다!</p>
                               </td>
                               <td className="p-3">
-                                <p>11 Jan 2022</p>
-                                <p className="dark:text-gray-400">Tuesday</p>
+                                <p>2022-12-16</p>
+                                <p className="dark:text-gray-400"></p>
                               </td>
                               <td>
 

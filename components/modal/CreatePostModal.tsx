@@ -36,6 +36,19 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const target = event.currentTarget;
     const file = (target.files as FileList)[0];
+
+    if(file.size > 10 * 1024 * 1024) {
+      alert('10mb 이하의 파일만 업로드 할 수 있습니다.');
+      target.value = '';
+      return;
+    }
+
+    if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/jpg' && file.type !== 'image/gif') {
+      alert('JPEG, PNG, JPG, GIF 파일만 업로드 가능합니다.');
+      target.value = '';
+      return;
+    }
+
     setFile(file);
     uploadFiles(file);
   }
@@ -78,8 +91,7 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
       });
       console.log(response);
       window.location.replace(`/${username}`);
-      // await resetState();
-      // await Router.push(`/${props.username}`);
+
     } catch (error) {
       console.error(error);
     }

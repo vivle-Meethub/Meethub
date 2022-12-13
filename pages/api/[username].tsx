@@ -65,11 +65,17 @@ export default async function handler(
 
       console.log(req.body.postId);
 
+      await client.tag.deleteMany({
+        where: { 
+          postId : req.body.postId
+         },
+      });
+
       const post = await client.post.delete({
         where: { id: req.body.postId },
       });
-      res.json(post);
       
+      res.json(post);
     };
 
   

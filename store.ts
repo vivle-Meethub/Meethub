@@ -4,6 +4,7 @@ import { devtools } from 'zustand/middleware';
 const initialState = {
   username : '',
   searchUsername:'',
+  author:'',
   is3D : true,
   commitCount : '0',
   location : '',
@@ -18,12 +19,14 @@ const initialState = {
   posts : [],
   post : {},
   tags: [],
+  relativeTime: new Date(),
 };
 
 const useStore = create(devtools((set) => ({
   ...initialState,
   setUsername : (input:any) => set({username : input}),
   setSearchUsername : (input:any) => set({searchUsername : input}),
+  setAuthor : (input:any) => set({author : input}),
   changeView: () => set((state:any) => ({ is3D: !state.is3D })),
   setCommitCount : (input:any) => set({commitCount : input}),
   setLocation : (input:any) => set({location : input}),
@@ -42,6 +45,7 @@ const useStore = create(devtools((set) => ({
   setPosts : (input:any) => set({posts : input}),
   setPost : (input:any) => set({post : input}),
   setTags : (input:any) => set({tags : input}),
+  setRelativeTime : (input:any) => set({relativeTime : input}),
 })))
   
 
