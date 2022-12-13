@@ -1,13 +1,49 @@
 import type { NextPage } from "next";
 import Layout from "../components/layout";
 import { signIn, useSession } from 'next-auth/react';
+import { useEffect } from "react";
+import axios from 'axios';
+import useStore from "../store";
+import PostDetailModal from "../components/modal/PostDetailModal";
 
 const Home: NextPage = () => {
 
   const { data: session } = useSession();
+  const posts = useStore((state:any) => state.posts)
+  const setPosts = useStore((state:any) => state.setPosts)
+  const openPostDetailModal = useStore((state:any) => state.openPostDetailModal)
+  const setPost = useStore((state:any) => state.setPost)
+
+  
+  const setPostAndOpenModal = async (index:number) => {
+      
+      await openPostDetailModal();  
+      await setPost(posts[index]);      
+    };
+
+  useEffect(() => {
+
+    const getPosts = async() => {
+
+      try {
+        
+        const response = await axios.get(`/api/post`,{
+          method: 'get',
+          timeout: 2000,
+        });
+        await setPosts(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    getPosts();
+  }, []);
 
   return (
     <Layout seoTitle="Main">
+
+      {!session ? 
       <div
         className="bg-video flex items-center justify-center absolute w-full h-full top-0 left-0 overflow-hidden touch-none"
       >
@@ -21,7 +57,7 @@ const Home: NextPage = () => {
           <strong>Your browser does not support the video tag.</strong>
         </video>
 
-        {!session && 
+        
 
       <div className="absolute top-1 w-full h-screen font-sans bg-cover bg-landscape z-10">
           <div className="container flex items-center justify-center flex-1 h-full mx-auto">
@@ -79,8 +115,66 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-      }
       </div>
+      
+      :
+      <div>
+
+          <div className="px-4 mt-24 mb-5">
+            <button className="w-20 h-10 rounded-full bg-[#78e08f] text-white">완료</button>
+            <button className="w-20 h-10 rounded-full border ml-2">진행중</button>
+          </div>
+
+          <div className="flex flex-wrap post-box">
+
+
+{posts && posts.map((post :any, index:number)=>{
+  return <div key={post.id} className="w-full sm:w-1/2 md:w-1/4 mb-4 px-4">
+
+ <div
+  className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
+  m-auto my-4 hover:-translate-y-2 duration-300" 
+  onClick = {()=>setPostAndOpenModal(index)}
+  >
+<div className="w-full block h-full">
+    <img 
+    alt="blog photo" 
+    src={post.img}
+    onError={({ currentTarget }) => {
+      currentTarget.onerror = null;
+      currentTarget.src="Img/basic-img.png";
+    }}
+    className="h-40 w-full object-cover"/>
+    <div className="bg-white dark:bg-gray-800 w-full p-4">
+
+        <p className="text-gray-800 dark:text-white text-base font-bold mb-2 truncate ...">
+            {post.title}
+        </p>
+        <p className="text-[#495057] dark:text-gray-300 text-sm whitespace-normal text-ellipsis overflow-hidden leading-normal h-[4.5em]">
+            {post.content}
+        </p>
+
+        <p className="text-[#868E96] text-xs mt-3">
+          {post.createdAt.toString().slice(0,10)}
+        </p>
+
+
+    </div>
+      
+</div>
+</div>
+
+  </div>
+  
+  })}
+  
+<PostDetailModal/>
+</div>
+  
+
+      </div>
+      
+      }
     </Layout>
   );
 };

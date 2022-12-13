@@ -1,23 +1,11 @@
 import PostDetail from "../user/PostDetail"
 import useStore from "../../store"
-import { useState } from "react";
 
 const PostDetailModal = (props:any)=> {
 
     const showPostDetailModal = useStore((state:any) => state.showPostDetailModal)
     const closePostDetailModal = useStore((state:any) => state.closePostDetailModal)
-
-
-    let [tempItem, setTempItem] = useState({});
-    let [tempRegDate, setTempRegDate] = useState('');
-
-
-        
-        const closeAndResetPost = () => {
-          closePostDetailModal();
-          setTempItem({});
-        //   setActiveDetailDialog(false);
-        };
+    const post = useStore((state:any) => state.post)
 
 
     return(
@@ -35,7 +23,7 @@ const PostDetailModal = (props:any)=> {
     
     
           <div className="py-2 px-6">
-              <PostDetail item ={tempItem} username={props.username} regDate={tempRegDate}/>
+              {post && <PostDetail/>}
               <div>
     
               <div className="mt-6">

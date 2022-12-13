@@ -130,14 +130,15 @@ const setPostAndOpenModal = (index:number) => {
 
 
 {posts && posts.map((post :any, index:number)=>{
-  return <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4">
-
-    <div 
-  className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
-  m-auto my-4 hover:-translate-y-2 duration-300" 
-  key={post.id}
-  onClick = {()=>setPostAndOpenModal(index)}
-  >
+  return <div 
+            key={post.id}
+            className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4"
+          >
+              <div 
+            className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
+            m-auto my-4 hover:-translate-y-2 duration-300" 
+            onClick = {()=>setPostAndOpenModal(index)}
+            >
 <div className="w-full block h-full">
     <img 
     alt="blog photo" 
@@ -162,6 +163,8 @@ const setPostAndOpenModal = (index:number) => {
 
 
     </div>
+
+   
       
 </div>
 </div>
@@ -170,26 +173,6 @@ const setPostAndOpenModal = (index:number) => {
   
   })}
 
-
-    
-  {/* <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-200"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-200"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div> */}
 </div>
 
 </div>
