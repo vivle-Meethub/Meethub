@@ -3,7 +3,7 @@ import { useState, useRef} from "react";
 import { Line } from "rc-progress";
 import { v4 as uuid } from 'uuid';
 import { storage } from "../../firebaseConfig";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL,deleteObject } from "firebase/storage";
 import axios from 'axios';
 import { TagsInput } from "react-tag-input-component";
 
@@ -11,6 +11,9 @@ const CreatePostModal = (props:any) =>{
 
 const showCreatePostModal = useStore((state:any) => state.showCreatePostModal)
 const closeCreatePostModal = useStore((state:any) => state.closeCreatePostModal)
+
+const newFileName = useStore((state:any) => state.newFileName)
+const setNewFileName = useStore((state:any) => state.setNewFileName)
 const username = props.username;
 
 const [photoURL, setPhotoURL] = useState('');
@@ -19,6 +22,7 @@ const [content, setContent] = useState('');
 const [file,setFile] = useState<File>();
 const [tagTitles, setTagtitles] = useState<string[]>([]);
 const [progress,setProgress] = useState(0);
+
 
 let fileInput=useRef<HTMLInputElement>(null);
 
@@ -51,14 +55,17 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     setFile(file);
     uploadFiles(file);
+
+    target.value = ''
   }
 
   const uploadFiles = (file:any) => {
 
     if(!file) return;
   
-    const newFileName = uuid();
-    const storageRef = ref(storage,`post-images/${newFileName}`);
+    const randomFileName = uuid();
+    setNewFileName(randomFileName);
+    const storageRef = ref(storage,`post-images/${randomFileName}`);
     const uploadTask = uploadBytesResumable(storageRef,file);
   
     uploadTask.on("state_changed", (snapshot) =>{
@@ -74,6 +81,23 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     );
   
   };
+
+    const deleteFile = () => {
+      const storageRef = ref(storage, `post-images/${newFileName}`);
+
+      setProgress(0);
+      setPhotoURL('');
+
+
+
+      deleteObject(storageRef)
+        .then(() => {
+          console.log(`delete success`);
+        })
+        .catch(error => {
+          console.log(`delete ${error}`);
+        });
+    };
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -159,7 +183,7 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
                                       
                                     </div>
               
-                          
+                            {progress <= 0 && (
                             <div>
                               <input 
                                 type="file" 
@@ -176,15 +200,22 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
                                 Upload
                               </button> */}
                             </div>
+                            )}
               
                           <hr />
               
-                          {/* <h3>Upload {progress} %</h3> */}
-                          <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />
-              
-                          {photoURL?.length > 0 && (
-                            <div>
+                          {progress !== 100 && <Line percent={progress} strokeWidth={2} strokeColor="#b8e994" />}
+                          
+                          {photoURL?.length > 0 && progress > 0 && (
+                            <div className="flex">
                               <img className="w-28 h-28" src={photoURL} alt='업로드 이미지'/>
+                              <div className="absolute left-28 text-xl cursor-pointer " onClick={deleteFile}>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                                      <path stroke="#f87171"  stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+
+                              </div>
                             </div>
                           )}
               

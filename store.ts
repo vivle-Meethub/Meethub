@@ -20,6 +20,7 @@ const initialState = {
   post : {},
   tags: [],
   relativeTime: new Date(),
+  newFileName : ''
 };
 
 const useStore = create(devtools((set) => ({
@@ -46,6 +47,7 @@ const useStore = create(devtools((set) => ({
   setPost : (input:any) => set({post : input}),
   setTags : (input:any) => set({tags : input}),
   setRelativeTime : (input:any) => set({relativeTime : input}),
+  setNewFileName : (input:any) => set({newFileName : input}),
 })))
   
 
