@@ -29,7 +29,6 @@ const Home: NextPage = () => {
         
         const response = await axios.get(`/api/post`,{
           method: 'get',
-          timeout: 2000,
         });
         await setPosts(response.data);
       } catch (error) {

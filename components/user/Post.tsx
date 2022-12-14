@@ -42,7 +42,6 @@ const setPostAndOpenModal = (index:number) => {
             
             const response = await axios.get(`/api/${props.username}`,{
               method: 'get',
-              timeout: 2000, 
             });
             console.log(response.data);
             setPosts(response.data);

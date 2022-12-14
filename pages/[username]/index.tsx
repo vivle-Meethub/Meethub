@@ -11,6 +11,7 @@ import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 import type { NextPage } from "next";
 import MobileProfile from "../../components/user/MobileProfile";
+import { Circle,Line } from "rc-progress";
 
 
 const User:NextPage = () => {
@@ -49,7 +50,6 @@ const User:NextPage = () => {
       try {
         const response = await axios.get(`/api/post/count/${username}`,{
           method: 'get',
-          timeout: 2000, 
         });
         console.log(response.data);
         setPostCount(response.data);
@@ -101,7 +101,8 @@ const User:NextPage = () => {
     console.log("post count : " + postCount);
     console.log(String(Number(commitCount) + postCount))
     setCommitCount(words[0]);
-    setTotalCount(String(Number(commitCount) + postCount))
+    setTotalCount(String(Number(words[0]) + postCount))
+
 
     sendMessage("GameManager", "GetUsername", username);
     sendMessage("GameManager", "GetCommit", totalCount);
@@ -127,92 +128,38 @@ const User:NextPage = () => {
             <section
               className="unity-post w-full"
             >
-              {isLoaded === false && (
-                <div className="loading-overlay">
-                  <p>Loading... ({loadingPercentage}%)</p>
-                </div>
-              )}
-
-              <div className="season-test flex p-4">
-                <ViewToggle/>
-
-
-                <div style={is3D ? { display: "flex" } : { display: "none" }}>
-                <div className="flex items-center">
-                  <span
-                  className="cursor-pointer"
-                  onClick={()=>{
-                    sendMessage("GameManager", "GetDate", "03/30/2022");
-                    sendUserToUnity();
-                  }}
-                  >
-                    🌸
-                  </span>
-                  
-                  {/* <SeasonButton emoji="🌸"/> */}
-                </div>
-
-
-                <div className="flex items-center">
-                  <span
-                  className="cursor-pointer"
-                  onClick={()=>{
-                    sendMessage("GameManager", "GetDate", "06/30/2022");
-                    sendUserToUnity();
-                  }}
-                  >
-                    🌴
-                  </span>
-                  
-                  {/* <SeasonButton emoji="🌴"/> */}
-                </div>
-
-                <div className="flex items-center">
-                  <span
-                  className="cursor-pointer"
-                  onClick={()=>{
-                    sendMessage("GameManager", "GetDate", "09/30/2022");
-                    sendUserToUnity();
-                  }}
-                  >
-                    🍁
-                  </span>
-                  
-                  {/* <SeasonButton emoji="🍁"/> */}
-                </div>
-
-                <div className="flex items-center">
-                  <span
-                  className="cursor-pointer"
-                  onClick={()=>{
-                    sendMessage("GameManager", "GetDate", "12/30/2022");
-                    sendUserToUnity();
-                  }}
-                  >
-                    ⛄
-                  </span>
-                  
-                  {/* <SeasonButton emoji="⛄"/> */}
-                </div>
-
-              </div>
-
-
-                </div>
-
+                
               {/* ==================== unity section ==================== */}
+              
+              {isLoaded === false && (
+                  <div className="loading-overlay py-72">
+                  <div className ="flex justify-center"><Circle className ="flex justify-center w-14" percent={loadingPercentage} strokeWidth={2} strokeColor="#78E08F"/></div>
+                  <div className ="flex justify-center mt-3">잠시만 기다려 주세요. ({loadingPercentage}%)</div>
+                  </div>
+                )}
+
+              {isLoaded !== false && <ViewToggle/>}
               <div style={is3D ? { display: "flex", justifyContent:'center' } : { display: "none" }}>
+{/* 
                 <Unity
-                  className="flex justify-center w-[97%] h-full items-center"
+                  className="flex justify-center w-[97%] items-center"
+                  unityProvider={unityProvider}
+                /> */}
+                
+
+                <Unity
+                  className= {isLoaded===true ? "flex justify-center w-[97%] lg:max-h-[600px] items-center" : "hidden"}
                   unityProvider={unityProvider}
                 />
+
               </div>
 
-              <div style={is3D ? { display: "none" } : { display: "flex", justifyContent:'center' }}>
+              <div style={is3D ? { display: "none" } : { display: "flex", justifyContent:'center', paddingLeft: '0.5rem',paddingRight: '0.5rem' }}>
                 {username && isLoaded && (
                   <GitHubCalendar year={year} username={username} blockSize={17}/>
                 )}
               </div>
+
 
               <div className="react-activity-calendar__count hidden"></div>
 
