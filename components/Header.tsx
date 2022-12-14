@@ -1,18 +1,20 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
 import useStore from "../store";
-import { signIn,signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import MessageBoxModal from "./modal/MessageBoxModal";
 
 const Header = () => {
 
 
   const router = useRouter();
-  const [searchUsername, setSearchUsername] = useState("");
   const { data: session } = useSession();
 
   const openMessageBoxModal = useStore((state:any) => state.openMessageBoxModal)
 
+
+  const searchUsername = useStore((state:any) => state.searchUsername)
+  const setSearchUsername = useStore((state:any) => state.setSearchUsername)
+  
   const onCheckEnter = (e: any) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -26,7 +28,7 @@ const Header = () => {
     <a href="#" className="block relative"
       onClick={openMessageBoxModal}
     >
-      <img alt="message" src="/img/envelope.svg" className="mx-auto object-contain rounded-full h-6 w-6"/>
+      <img alt="message" src="/Img/envelope.svg" className="mx-auto object-contain rounded-full h-6 w-6"/>
     </a>
   </div>
 );
@@ -36,13 +38,13 @@ let logout = (
     {session?
       (
       <button onClick={()=>signOut()} className="block relative">
-        <img alt="logout" src="/img/poweron.svg" className="mx-auto object-contain rounded-full h-6 w-6 hover"/>
+        <img alt="logout" src="/Img/poweron.svg" className="mx-auto object-contain rounded-full h-6 w-6 hover"/>
       </button>
       ) :
 
       (
         <a href="/" className="block relative">
-        <img alt="logout" src="/img/power.svg" className="mx-auto ml-5 object-contain rounded-full h-6 w-6 hover"/>
+        <img alt="logout" src="/Img/power.svg" className="mx-auto ml-5 object-contain rounded-full h-6 w-6 hover"/>
       </a>
       )
     }
