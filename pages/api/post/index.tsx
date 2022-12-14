@@ -9,16 +9,16 @@ export default async function handler(
 
     if (req.method === "GET") {
 
-        const {postId} = req.query
+      await client?.post.findMany({
+        orderBy: {
+          createdAt:"desc"
+        },
+        include : {
+          author:true,
+          tags:true,
+        }
 
-      await client?.post.findUnique({
-         where:{
-            id: String(postId)
-         },
-         include:{
-            author:true,
-            tags:true,
-         }          
+          
       }).then(data=>res.json(data))
     };
 }
