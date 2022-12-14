@@ -1,32 +1,24 @@
-// import { NextApiRequest, NextApiResponse } from "next";
-// import client from "../../../lib/server/client";
+import { NextApiRequest, NextApiResponse } from "next";
+import {client} from "../../../lib/server/client"
 
 
-// export default async function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
 
-//     if (req.method === "GET") {
+    if (req.method === "GET") {
 
-//         const {postId} = req.query
+        const {postId} = req.query
 
-//         await client.post.findUnique({
-//             where: {
-//               id: String(postId), 
-//             },
-//             include: {
-//               author: {
-//                 select: { name: true, email: true },
-//               },
-//             },
-//           }).then(data=>res.json(data))
-//     };
-
-
-// }
-
-
-
-
-
+      await client?.post.findUnique({
+         where:{
+            id: String(postId)
+         },
+         include:{
+            author:true,
+            tags:true,
+         }          
+      }).then(data=>res.json(data))
+    };
+}
