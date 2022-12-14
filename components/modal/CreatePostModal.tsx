@@ -102,6 +102,17 @@ const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
+    if(tagTitles.length > 10){
+      alert("태그는 최대 10개까지 추가할 수 있습니다.");
+      return;
+    }
+
+    if(title === ''){
+      alert("제목을 입력해주세요.");
+      return;
+    }
+
+
     try {
 
       const formData = { title, content,photoURL, username, tagTitles};
