@@ -11,7 +11,7 @@ import Layout from "../../components/layout";
 import ViewToggle from "../../components/user/ViewToggle";
 import type { NextPage } from "next";
 import MobileProfile from "../../components/user/MobileProfile";
-import { Circle,Line } from "rc-progress";
+import { Circle } from "rc-progress";
 
 
 const User:NextPage = () => {
@@ -60,33 +60,21 @@ const User:NextPage = () => {
   
     getPostCount();
     
-
-
-    setTimeout(() => {
+    setTimeout(()=>{
       sendMessage("GameManager", "GetDate", "12/16/2022");
       sendUserToUnity();
-    },2000);
-        
-
-  }, [username]);
+    },2000)
 
 
-  useEffect(() => {   
-    sendMessage("GameManager", "GetDate", "12/16/2022");
-    sendUserToUnity();
+  }, [username,postCount]);
 
-}, [postCount]);
+
 
   useEffect(() => {   
+    setTimeout(()=>{
       sendMessage("GameManager", "GetDate", "12/16/2022");
       sendUserToUnity();
-
-  }, [commitCount]);
-
-
-  useEffect(() => {   
-    sendMessage("GameManager", "GetDate", "12/16/2022");
-    sendUserToUnity();
+    },500)
 
 }, [totalCount]);
 
@@ -161,7 +149,7 @@ const User:NextPage = () => {
               </div>
 
 
-              <div className="react-activity-calendar__count hidden"></div>
+              <div className="react-activity-calendar__count hidden">{'0'}</div>
 
               <MobileProfile username={username}/>
 

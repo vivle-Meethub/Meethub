@@ -22,7 +22,6 @@ const Post = (props:any) =>{
     
     const posts = useStore((state:any) => state.posts)
     const setPosts = useStore((state:any) => state.setPosts)
-    const post = useStore((state:any) => state.post)
     const setPost = useStore((state:any) => state.setPost)
 
 

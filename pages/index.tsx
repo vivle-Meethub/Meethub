@@ -120,8 +120,8 @@ const Home: NextPage = () => {
       <div>
 
           <div className="px-4 mt-24 mb-5">
-            <button className="w-20 h-10 rounded-full bg-[#78e08f] text-white">완료</button>
-            <button className="w-20 h-10 rounded-full border ml-2">진행중</button>
+            <button className="w-16 h-8 rounded-full bg-[#78e08f] text-white text-sm">완료</button>
+            <button className="w-16 h-8 rounded-full border ml-2 text-sm">진행중</button>
           </div>
 
           <div className="flex flex-wrap post-box">
