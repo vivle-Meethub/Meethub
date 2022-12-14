@@ -62,7 +62,7 @@ const Home: NextPage = () => {
                         className="py-2 px-4 flex justify-center items-center  bg-[#03C75AB3] hover:bg-[#03C75A] focus:ring-[#03C75AB3] focus:ring-offset-gray-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
                         onClick={() => signIn("naver")}
                       >
-                        <img className="w-5 h-5 mr-4" src="Img/naver.png" />
+                        <img className="w-5 h-5 mr-4" src="/Img/naver.png" />
                         Sign in with Naver
                       </button>
                     </div>

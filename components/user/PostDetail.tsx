@@ -19,7 +19,6 @@ const PostDetail = (props:any) =>{
         
         const response = await axios.get(`/api/post/tag/${post.id}`,{
           method: 'get',
-          timeout: 2000, 
         });
         console.log(response.data);
         setTags(response.data);

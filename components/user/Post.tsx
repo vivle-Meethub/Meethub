@@ -42,7 +42,6 @@ const setPostAndOpenModal = (index:number) => {
             
             const response = await axios.get(`/api/${username}`,{
               method: 'get',
-              timeout: 2000, 
             });
             console.log(response.data);
             setPosts(response.data);
@@ -144,7 +143,7 @@ const setPostAndOpenModal = (index:number) => {
     src={post.img}
     onError={({ currentTarget }) => {
       currentTarget.onerror = null;
-      currentTarget.src="Img/basic-img.png";
+      currentTarget.src="/Img/basic-img.png";
     }}
     className="h-40 w-full object-cover"/>
     <div className="bg-white dark:bg-gray-800 w-full p-4">

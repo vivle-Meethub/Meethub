@@ -7,7 +7,7 @@ const ViewToggle = () =>{
 
     return(
         <>
-            <div className="view-toggle flex items-center ml-20 mr-20">
+            <div className="view-toggle flex items-center p-4">
                   <div
                     
                     className=" relative inline-block w-10 mr-2 align-middle select-none"
