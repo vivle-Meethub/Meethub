@@ -96,7 +96,7 @@ const setPostAndOpenModal = (index:number) => {
         {session?.user?.name === username &&
           <div 
             className="px-6 py-3 bg-[#78e08f] text-white font-bold text-sm rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200"
-            onClick={openCreatePostModal}
+            onClick={()=>setPostAndOpenModal}
             >
               게시물 작성하기
           </div>
