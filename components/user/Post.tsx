@@ -127,7 +127,7 @@ const setPostAndOpenModal = (index:number) => {
     }
 
 
-{posts && posts.map((post :any, index:number)=>{
+{posts.length >=1 && posts.map((post :any, index:number)=>{
   return <div 
             key={post.id}
             className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4"
