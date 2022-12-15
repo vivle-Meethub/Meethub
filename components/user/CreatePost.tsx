@@ -24,7 +24,7 @@ const CreatePost = (props:any) =>{
     src='/Img/plus-circle.svg'
     onError={({ currentTarget }) => {
       currentTarget.onerror = null;
-      currentTarget.src="/Img/basic-img.png";
+      currentTarget.src="Img/basic-img.png";
     }}
     className="max-h-40 w-full "/>
 
