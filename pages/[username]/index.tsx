@@ -66,7 +66,7 @@ const User:NextPage = () => {
     },2000)
 
 
-  }, [username,postCount]);
+  }, [username,postCount,isLoaded]);
 
 
 
