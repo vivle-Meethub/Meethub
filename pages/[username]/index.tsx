@@ -130,7 +130,7 @@ const User:NextPage = () => {
 
             {/* ==================== unity-post section ==================== */}
             <section
-             className= {isLoaded===true ? "unity-post w-full" : "hidden"}
+             className= {isLoaded===true ? "unity-post w-full" : "unity-post w-full hidden"}
             >
                 
               {/* ==================== unity section ==================== */}
