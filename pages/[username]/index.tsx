@@ -60,7 +60,7 @@ const User:NextPage = () => {
   
     getPostCount();
     
-  }, [username]);
+  }, [username,postCount]);
   
 
   useEffect(() => {
