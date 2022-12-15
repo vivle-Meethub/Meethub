@@ -1,4 +1,3 @@
-import useStore from "../../store"
 import UserStatus from "./UserStatus";
 import { useState } from "react";
 
@@ -7,12 +6,9 @@ const StateDropdown = (props:any) =>{
     const [dropdown, setDropdown] = useState(false);
     const [myStatus, setMyStatus] = useState('online');
 
-    const postCount = useStore((state:any) => state.postCount)
-
     return(
-    <section>
         <div>
-        <div onClick={() => setDropdown(!dropdown)} className="p-3 bg-white dark:bg-darkSecondary shadow-lg rounded-xl flex items-center justify-center w-44 cursor-pointer">
+        <div onClick={() => setDropdown(!dropdown)} className="p-2 bg-white dark:bg-darkSecondary shadow-lg rounded-full flex items-center justify-center  cursor-pointer">
             <UserStatus status = {myStatus}/>
         </div>
         <ul
@@ -43,7 +39,6 @@ const StateDropdown = (props:any) =>{
             </li>
         </ul>
         </div>
-    </section>
     )
 }
 

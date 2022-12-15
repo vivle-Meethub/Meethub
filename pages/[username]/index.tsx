@@ -79,6 +79,8 @@ const User:NextPage = () => {
 }, [totalCount]);
 
 
+
+
   const sendUserToUnity = async () => {
     const commitCountDiv = document.querySelector(
       ".react-activity-calendar__count"
