@@ -60,6 +60,11 @@ const User:NextPage = () => {
   
     getPostCount();
     
+  }, []);
+  
+
+  useEffect(() => {
+
     setTimeout(()=>{
       sendMessage("GameManager", "GetDate", "12/16/2022");
       sendUserToUnity();
