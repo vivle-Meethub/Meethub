@@ -84,6 +84,15 @@ const User:NextPage = () => {
 }, [totalCount]);
 
 
+  useEffect(() => {   
+    setTimeout(()=>{
+      sendMessage("GameManager", "GetDate", "12/16/2022");
+      sendUserToUnity();
+    },500)
+
+}, [postCount]);
+
+
 
 
   const sendUserToUnity = async () => {
