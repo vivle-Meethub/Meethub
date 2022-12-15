@@ -130,7 +130,8 @@ const User:NextPage = () => {
 
             {/* ==================== unity-post section ==================== */}
             <section
-             className= {isLoaded===true ? "unity-post w-full" : "unity-post w-full hidden"}
+            
+              className="unity-post w-full"
             >
                 
               {/* ==================== unity section ==================== */}
@@ -166,11 +167,13 @@ const User:NextPage = () => {
 
 
               <div className="react-activity-calendar__count hidden">{'0'}</div>
-
-              <MobileProfile username={username}/>
+              
+              {isLoaded !== false && <MobileProfile username={username}/>}
+              
 
               {/* ==================== post section ==================== */}
-                  <Post username={username}/>
+              {isLoaded !== false && <Post username={username}/>}
+                  
 
             </section>
             </section>
