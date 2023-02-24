@@ -17,7 +17,7 @@ model Post {
   authorId  String?
   img       String?
   createdAt  DateTime    @default(now())
-  tags      Tag[]
+  tags      Tag[] 
 }
 
 model Tag {

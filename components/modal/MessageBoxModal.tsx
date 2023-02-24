@@ -48,8 +48,8 @@ return(
                                 <p>meethub에 오신 것을 환영합니다!</p>
                               </td>
                               <td className="p-3">
-                                <p>11 Jan 2022</p>
-                                <p className="dark:text-gray-400">Tuesday</p>
+                                <p>2022-12-16</p>
+                                <p className="dark:text-gray-400"></p>
                               </td>
                               <td>
 
@@ -64,7 +64,7 @@ return(
                                 <span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
                                   <a href="#" className="block relative"
                                   >
-                                    <img alt="profil" src="/img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
+                                    <img alt="profil" src="/Img/paper-airplane.svg" className="mx-auto object-cover rounded-full h-6 w-6 " />
                                   </a>
                                 </span>
                               </td>

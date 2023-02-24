@@ -1,9 +1,9 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState,useEffect,useRef } from "react";
 import axios from 'axios';
-import { useRouter,Router } from "next/router";
+import { useRouter } from "next/router";
 
-import { signIn,signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 import CreatePost from "./CreatePost";
 import CreatePostModal from "../modal/CreatePostModal";
@@ -22,7 +22,6 @@ const Post = (props:any) =>{
     
     const posts = useStore((state:any) => state.posts)
     const setPosts = useStore((state:any) => state.setPosts)
-    const post = useStore((state:any) => state.post)
     const setPost = useStore((state:any) => state.setPost)
 
 
@@ -40,9 +39,8 @@ const setPostAndOpenModal = (index:number) => {
 
           try {
             
-            const response = await axios.get(`/api/${username}`,{
+            const response = await axios.get(`/api/${props.username}`,{
               method: 'get',
-              timeout: 2000, 
             });
             console.log(response.data);
             setPosts(response.data);
@@ -96,7 +94,7 @@ const setPostAndOpenModal = (index:number) => {
         {session?.user?.name === username &&
           <div 
             className="px-6 py-3 bg-[#78e08f] text-white font-bold text-sm rounded-lg hover:scale-110 active:scale-90 transition-transform ease-in-out duration-200"
-            onClick={()=>setPostAndOpenModal}
+            onClick={openCreatePostModal}
             >
               게시물 작성하기
           </div>
@@ -129,15 +127,16 @@ const setPostAndOpenModal = (index:number) => {
     }
 
 
-{posts && posts.map((post :any, index:number)=>{
-  return <div className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4">
-
-    <div 
-  className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
-  m-auto my-4 hover:-translate-y-2 duration-300" 
-  key={post.id}
-  onClick = {()=>setPostAndOpenModal(index)}
-  >
+{posts.length >=1 && posts.map((post :any, index:number)=>{
+  return <div 
+            key={post.id}
+            className="w-full sm:w-1/2 md:w-1/3 mb-4 px-4"
+          >
+              <div 
+            className="post-item overflow-hidden shadow-lg rounded-lg h-80 cursor-pointer
+            m-auto my-4 hover:-translate-y-2 duration-300" 
+            onClick = {()=>setPostAndOpenModal(index)}
+            >
 <div className="w-full block h-full">
     <img 
     alt="blog photo" 
@@ -162,6 +161,8 @@ const setPostAndOpenModal = (index:number) => {
 
 
     </div>
+
+   
       
 </div>
 </div>
@@ -170,26 +171,6 @@ const setPostAndOpenModal = (index:number) => {
   
   })}
 
-
-    
-  {/* <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-200"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-200"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div>
-  <div className="w-1/3 mb-4 px-2">
-    <div className="h-12 bg-indigo-300"></div>
-  </div> */}
 </div>
 
 </div>
