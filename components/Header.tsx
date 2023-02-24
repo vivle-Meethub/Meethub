@@ -35,7 +35,7 @@ let logout = (
   <div className="relative p-1 flex items-center justify-end mr-4 sm:mr-0 sm:right-auto">
     {session?
       (
-      <button onClick={()=>signOut()} className="block relative">
+      <button onClick={()=>signOut({ callbackUrl: `/`})} className="block relative">
         <img alt="logout" src="/img/poweron.svg" className="mx-auto object-contain rounded-full h-6 w-6 hover"/>
       </button>
       ) :
