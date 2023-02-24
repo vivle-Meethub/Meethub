@@ -60,10 +60,6 @@ const User:NextPage = () => {
   
     getPostCount();
     
-  }, [username]);
-  
-
-  useEffect(() => {
 
     setTimeout(()=>{
       sendMessage("GameManager", "GetDate", "12/16/2022");
@@ -71,7 +67,7 @@ const User:NextPage = () => {
     },2000)
 
 
-  }, [username,postCount,isLoaded]);
+  }, [username,postCount]);
 
 
 
@@ -154,8 +150,6 @@ const User:NextPage = () => {
                   <GitHubCalendar year={year} username={username} blockSize={17}/>
                 )}
               </div>
-
-
               <div className="react-activity-calendar__count hidden">{'0'}</div>
               
               {isLoaded !== false && <MobileProfile username={username}/>}

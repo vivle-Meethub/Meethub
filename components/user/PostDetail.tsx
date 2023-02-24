@@ -114,11 +114,9 @@ const PostDetail = (props:any) =>{
   </div>
 
   <div>
-    <p
+    <pre
     style={{fontFamily:'Spoqa Han Sans Neo'}}
-    className='whitespace-pre-line'>{post.content}
-    </p>
-
+    className='whitespace-pre-line'>{post.content}</pre>
   </div>
 </article>
         </>
