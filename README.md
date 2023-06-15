@@ -24,7 +24,7 @@
 </p>
 
 ## 배포 링크
-https://www.meethub.co.kr
+https://meethub-deploy.vercel.app
 
 ## 시연 영상
 https://youtu.be/s5UZfB-1evc
